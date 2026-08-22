@@ -5,28 +5,15 @@ import {
   Button,
   Container,
   Paper,
-  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
 import { DepartmentsHeader } from "@/components/departments/DepartmentsHeader";
 import { DepartmentFormDialog } from "@/components/dialogs/DepartmentFormDialog";
+import { DepartmentsDataGridSkeleton } from "@/components/skeletons/DepartmentsDataGridSkeleton";
 import { DepartmentsDataGrid } from "@/components/tables/DepartmentsDataGrid";
 import { useDepartments } from "@/hooks/useDepartments";
 import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
-
-function DepartmentsLoadingState() {
-  return (
-    <Paper variant="outlined" aria-label={DEPARTMENTS_TEXT.loading}>
-      <Stack spacing={2} sx={{ p: 3 }}>
-        <Skeleton variant="rounded" height={40} />
-        <Skeleton variant="rounded" height={64} />
-        <Skeleton variant="rounded" height={64} />
-        <Skeleton variant="rounded" height={64} />
-      </Stack>
-    </Paper>
-  );
-}
 
 export function Departments() {
   const departmentsState = useDepartments();
@@ -42,7 +29,7 @@ export function Departments() {
         />
 
         {departmentsState.isLoading ? (
-          <DepartmentsLoadingState />
+          <DepartmentsDataGridSkeleton />
         ) : departmentsState.loadError ? (
           <Alert
             severity="error"
@@ -73,6 +60,7 @@ export function Departments() {
                   ? DEPARTMENTS_TEXT.noResults.title
                   : DEPARTMENTS_TEXT.empty.title}
               </Typography>
+
               <Typography color="text.secondary">
                 {hasSearch
                   ? DEPARTMENTS_TEXT.noResults.description
