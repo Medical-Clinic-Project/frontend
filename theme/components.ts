@@ -23,6 +23,10 @@ export const components: Components<Theme> = {
         borderRadius: theme.shape.borderRadius,
         paddingInline: theme.spacing(2.5),
       }),
+      sizeSmall: ({ theme }) => ({
+        minHeight: theme.spacing(5),
+        paddingInline: theme.spacing(2),
+      }),
     },
   },
   MuiTextField: {
@@ -79,6 +83,17 @@ export const components: Components<Theme> = {
       root: ({ theme }) => ({
         borderRadius: theme.shape.borderRadius,
         alignItems: "center",
+      }),
+    },
+  },
+  MuiDialogActions: {
+    defaultProps: {
+      disableSpacing: true,
+    },
+    styleOverrides: {
+      root: ({ theme }) => ({
+        gap: theme.spacing(1.5),
+        padding: theme.spacing(2, 3, 3),
       }),
     },
   },
