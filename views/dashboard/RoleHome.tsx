@@ -18,7 +18,7 @@ export function RoleHome() {
   const { isLoggingOut, logout, logoutError } = useLogout();
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ display: "flex", flex: 1, width: "100%" }}>
       <Stack
         spacing={3}
         sx={{ minHeight: "100dvh", justifyContent: "center" }}

@@ -7,8 +7,10 @@ export const APP_ROUTES = {
   admin: "/admin",
   adminDepartments: "/admin/departments",
   adminDoctors: "/admin/doctors",
+  adminPatients: "/admin/patients",
   doctor: "/doctor",
   patient: "/patient",
+  patientProfile: "/patient/profile",
 } as const;
 
 export const ROLE_HOME: Record<UserRole, string> = {

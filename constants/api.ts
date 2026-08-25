@@ -23,6 +23,13 @@ export const DOCTOR_ENDPOINTS = {
   byId: (id: number) => `/api/doctors/${id}`,
 } as const;
 
+export const PATIENT_ENDPOINTS = {
+  root: "/api/patients",
+  byId: (id: number) => `/api/patients/${id}`,
+  status: (id: number) => `/api/patients/${id}/status`,
+  me: "/api/patients/me",
+} as const;
+
 export function getApiUrl(path: string): string {
   if (!API_BASE_URL) {
     throw new ApiError(0, API_MESSAGES.missingConfiguration);

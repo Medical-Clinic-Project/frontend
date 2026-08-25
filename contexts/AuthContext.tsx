@@ -15,6 +15,7 @@ export interface AuthContextValue {
   isAuthenticated: boolean;
   isInitializing: boolean;
   setSession: (session: AuthSession) => void;
+  updateUser: (updates: Pick<AuthUser, "fullName" | "email">) => void;
   clearSession: () => void;
   finishInitialization: () => void;
 }
@@ -28,6 +29,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const setSession = useCallback((nextSession: AuthSession) => {
     setAuthSession(nextSession);
   }, []);
+
+  const updateUser = useCallback(
+    (updates: Pick<AuthUser, "fullName" | "email">) => {
+      setAuthSession((currentSession) =>
+        currentSession
+          ? {
+              ...currentSession,
+              user: { ...currentSession.user, ...updates },
+            }
+          : currentSession,
+      );
+    },
+    [],
+  );
 
   const clearSession = useCallback(() => {
     setAuthSession(null);
@@ -44,10 +59,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAuthenticated: Boolean(session),
       isInitializing,
       setSession,
+      updateUser,
       clearSession,
       finishInitialization,
     }),
-    [clearSession, finishInitialization, isInitializing, session, setSession],
+    [
+      clearSession,
+      finishInitialization,
+      isInitializing,
+      session,
+      setSession,
+      updateUser,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
