@@ -9,6 +9,7 @@ export const APP_ROUTES = {
   adminDoctors: "/admin/doctors",
   adminPatients: "/admin/patients",
   doctor: "/doctor",
+  doctorAvailability: "/doctor/availability",
   patient: "/patient",
   patientProfile: "/patient/profile",
 } as const;

@@ -21,6 +21,12 @@ export const DEPARTMENT_ENDPOINTS = {
 export const DOCTOR_ENDPOINTS = {
   root: "/api/doctors",
   byId: (id: number) => `/api/doctors/${id}`,
+  availability: (id: number) => `/api/doctors/${id}/availability`,
+} as const;
+
+export const DOCTOR_AVAILABILITY_ENDPOINTS = {
+  root: "/api/doctor-availability",
+  byId: (id: number) => `/api/doctor-availability/${id}`,
 } as const;
 
 export const PATIENT_ENDPOINTS = {

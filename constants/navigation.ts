@@ -54,6 +54,25 @@ export const PATIENT_NAVIGATION_TEXT = {
   ariaLabel: "Patient navigation",
 } as const;
 
+export const DOCTOR_NAVIGATION_TEXT = {
+  brand: "Clinic Portal",
+  section: "Doctor",
+  ariaLabel: "Doctor navigation",
+} as const;
+
+export const DOCTOR_NAVIGATION_ITEMS = [
+  {
+    label: "Dashboard",
+    href: APP_ROUTES.doctor,
+    exact: true,
+  },
+  {
+    label: "Availability",
+    href: APP_ROUTES.doctorAvailability,
+    exact: false,
+  },
+] as const;
+
 export const PATIENT_NAVIGATION_ITEMS = [
   {
     label: "Dashboard",
