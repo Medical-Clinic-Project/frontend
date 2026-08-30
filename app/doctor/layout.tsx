@@ -1,6 +1,11 @@
-import { RoleGuard } from "@/components/auth/RoleGuard";
+import { PermissionGuard } from "@/components/auth/PermissionGuard";
+import { PERMISSIONS } from "@/constants/accessControl";
 import type { ReactNode } from "react";
 
 export default function DoctorLayout({ children }: { children: ReactNode }) {
-  return <RoleGuard allowedRoles={["Doctor"]}>{children}</RoleGuard>;
+  return (
+    <PermissionGuard permission={PERMISSIONS.accessDoctorWorkspace}>
+      {children}
+    </PermissionGuard>
+  );
 }

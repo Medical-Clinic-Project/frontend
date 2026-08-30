@@ -1,4 +1,4 @@
-import { apiRequest } from "@/api/apiClient";
+import { apiClient } from "@/api/apiClient";
 import { AUTH_ENDPOINTS } from "@/constants/api";
 import { API_MESSAGES } from "@/constants/apiMessages";
 import { ApiError } from "@/types/api";
@@ -23,9 +23,7 @@ async function requestSession(
   endpoint: string,
   body?: LoginRequest | RegisterRequest,
 ): Promise<AuthResponse> {
-  const response = await apiRequest(endpoint, {
-    method: "POST",
-    body: body ? JSON.stringify(body) : undefined,
+  const response = await apiClient.post<unknown>(endpoint, body, {
     credentials: "include",
     skipAuth: true,
     skipAuthRefresh: true,
@@ -34,15 +32,21 @@ async function requestSession(
   return validateAuthResponse(response);
 }
 
-export const authApi = {
-  login: (request: LoginRequest) => requestSession(AUTH_ENDPOINTS.login, request),
-  register: (request: RegisterRequest) => requestSession(AUTH_ENDPOINTS.register, request),
-  refresh: () => requestSession(AUTH_ENDPOINTS.refresh),
-  logout: async () => {
-    await apiRequest(AUTH_ENDPOINTS.logout, {
-      method: "POST",
-      credentials: "include",
-      skipAuthRefresh: true,
-    });
-  },
-};
+export async function login(request: LoginRequest): Promise<AuthResponse> {
+  return requestSession(AUTH_ENDPOINTS.login, request);
+}
+
+export async function register(request: RegisterRequest): Promise<AuthResponse> {
+  return requestSession(AUTH_ENDPOINTS.register, request);
+}
+
+export async function refresh(): Promise<AuthResponse> {
+  return requestSession(AUTH_ENDPOINTS.refresh);
+}
+
+export async function logout(): Promise<void> {
+  await apiClient.post<void>(AUTH_ENDPOINTS.logout, undefined, {
+    credentials: "include",
+    skipAuthRefresh: true,
+  });
+}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { authApi } from "@/api/authApi";
+import { login } from "@/api/authApi";
 import { ROLE_HOME } from "@/constants/routes";
 import { useAuth } from "@/hooks/useAuth";
 import { ApiError } from "@/types/api";
@@ -35,7 +35,7 @@ export function useLogin() {
     form.clearErrors();
 
     try {
-      const response = await authApi.login({
+      const response = await login({
         email: values.email.trim(),
         password: values.password,
       });

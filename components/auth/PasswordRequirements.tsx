@@ -1,29 +1,44 @@
-import { Stack, Typography } from "@mui/material";
-import { REGISTER_TEXT } from "@/views/auth/register/Register.text";
+import CheckCircle from "@mui/icons-material/CheckCircle";
+import RadioButtonUnchecked from "@mui/icons-material/RadioButtonUnchecked";
+import { List, ListItem, Stack, Typography } from "@mui/material";
+import { AUTH_TEXT } from "@/views/auth/AuthText";
+import { REGISTER_TEXT } from "@/views/auth/register/RegisterText";
 import { PASSWORD_REQUIREMENTS } from "@/views/auth/register/registerValidation";
 
 export function PasswordRequirements({ password }: { password: string }) {
   return (
-    <Stack
-      component="ul"
-      spacing={0.5}
-      aria-label="Password requirements"
-      sx={{ pl: 2.5, m: 0 }}
-    >
+    <List dense disablePadding aria-label={AUTH_TEXT.passwordRequirements}>
       {PASSWORD_REQUIREMENTS.map((requirement) => {
         const isMet = requirement.test(password);
+        const requirementLabel = REGISTER_TEXT.passwordRequirements[requirement.key];
 
         return (
-          <Typography
-            component="li"
-            variant="body2"
-            color={isMet ? "success.main" : "text.secondary"}
+          <ListItem
+            alignItems="center"
+            disableGutters
+            aria-label={`${requirementLabel}: ${
+              isMet
+                ? AUTH_TEXT.passwordRequirementStatus.met
+                : AUTH_TEXT.passwordRequirementStatus.notMet
+            }`}
             key={requirement.key}
           >
-            {isMet ? "✓" : "•"} {REGISTER_TEXT.passwordRequirements[requirement.key]}
-          </Typography>
+            <Stack direction="row" spacing={1}>
+              {isMet ? (
+                <CheckCircle color="success" fontSize="small" aria-hidden />
+              ) : (
+                <RadioButtonUnchecked color="disabled" fontSize="small" aria-hidden />
+              )}
+              <Typography
+                variant="body2"
+                color={isMet ? "success.main" : "text.secondary"}
+              >
+                {requirementLabel}
+              </Typography>
+            </Stack>
+          </ListItem>
         );
       })}
-    </Stack>
+    </List>
   );
 }

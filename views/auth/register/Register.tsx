@@ -7,7 +7,7 @@ import { PasswordRequirements } from "@/components/auth/PasswordRequirements";
 import { PublicOnly } from "@/components/auth/PublicOnly";
 import NextLink from "@/components/navigation/NextLink";
 import { APP_ROUTES } from "@/constants/routes";
-import { REGISTER_TEXT } from "@/views/auth/register/Register.text";
+import { REGISTER_TEXT } from "@/views/auth/register/RegisterText";
 import { useRegister } from "@/views/auth/register/useRegister";
 
 export function Register() {

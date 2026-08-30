@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { REGISTER_TEXT } from "@/views/auth/register/Register.text";
+import { REGISTER_TEXT } from "@/views/auth/register/RegisterText";
 
 export const PASSWORD_REQUIREMENTS = [
   {

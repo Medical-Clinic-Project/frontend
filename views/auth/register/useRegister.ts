@@ -4,13 +4,13 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { authApi } from "@/api/authApi";
+import { register } from "@/api/authApi";
 import { APP_ROUTES } from "@/constants/routes";
 import { useAuth } from "@/hooks/useAuth";
 import { ApiError } from "@/types/api";
 import { toAuthSession } from "@/types/auth";
 import { applyApiFieldErrors } from "@/utils/forms/applyApiFieldErrors";
-import { REGISTER_TEXT } from "@/views/auth/register/Register.text";
+import { REGISTER_TEXT } from "@/views/auth/register/RegisterText";
 import {
   registerSchema,
   type RegisterFormValues,
@@ -37,7 +37,7 @@ export function useRegister() {
     form.clearErrors();
 
     try {
-      const response = await authApi.register({
+      const response = await register({
         fullName: values.fullName.trim(),
         email: values.email.trim(),
         password: values.password,

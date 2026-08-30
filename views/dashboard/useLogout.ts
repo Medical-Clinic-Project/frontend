@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { authApi } from "@/api/authApi";
+import { logout as logoutRequest } from "@/api/authApi";
 import { APP_ROUTES } from "@/constants/routes";
 import { useAuth } from "@/hooks/useAuth";
 import { getUserFacingError } from "@/utils/apiErrors";
@@ -18,7 +18,7 @@ export function useLogout() {
     setLogoutError(null);
 
     try {
-      await authApi.logout();
+      await logoutRequest();
       clearSession();
       router.replace(APP_ROUTES.login);
     } catch (error) {

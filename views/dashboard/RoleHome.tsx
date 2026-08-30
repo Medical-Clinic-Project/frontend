@@ -1,12 +1,19 @@
 "use client";
 
-import { Alert, Button, Card, CardContent, Container, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useAuth } from "@/hooks/useAuth";
-import type { UserRole } from "@/types/auth";
-import { ROLE_HOME_TEXT } from "@/views/dashboard/RoleHome.text";
+import { ROLE_HOME_TEXT } from "@/views/dashboard/RoleHomeText";
 import { useLogout } from "@/views/dashboard/useLogout";
 
-export function RoleHome({ role }: { role: UserRole }) {
+export function RoleHome() {
   const { user } = useAuth();
   const { isLoggingOut, logout, logoutError } = useLogout();
 
@@ -14,7 +21,7 @@ export function RoleHome({ role }: { role: UserRole }) {
     <Container maxWidth="md">
       <Stack
         spacing={3}
-        sx={{ minHeight: "100dvh", justifyContent: "center", py: 5 }}
+        style={{ minHeight: "100dvh", justifyContent: "center" }}
       >
         {logoutError && <Alert severity="error">{logoutError}</Alert>}
 
@@ -22,8 +29,8 @@ export function RoleHome({ role }: { role: UserRole }) {
           <CardContent>
             <Stack spacing={3}>
               <Stack spacing={1}>
-                <Typography color="primary.main" sx={{ fontWeight: 700 }}>
-                  {role} {ROLE_HOME_TEXT.workspaceSuffix}
+                <Typography component="strong" color="primary.main">
+                  {user?.role} {ROLE_HOME_TEXT.workspaceSuffix}
                 </Typography>
                 <Typography component="h1" variant="h2">
                   {ROLE_HOME_TEXT.welcomePrefix} {user?.fullName}
@@ -35,11 +42,8 @@ export function RoleHome({ role }: { role: UserRole }) {
 
               <Stack
                 direction={{ xs: "column", sm: "row" }}
-                sx={{
-                  gap: 2,
-                  alignItems: { sm: "center" },
-                  justifyContent: "space-between",
-                }}
+                spacing={2}
+                style={{ justifyContent: "space-between" }}
               >
                 <Typography variant="body2" color="text.secondary">
                   {ROLE_HOME_TEXT.signedInPrefix} {user?.email}

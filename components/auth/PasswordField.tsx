@@ -1,20 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
+  IconButton,
   InputAdornment,
-  Link,
   TextField,
+  Tooltip,
   type TextFieldProps,
 } from "@mui/material";
-
-const PASSWORD_VISIBILITY_TEXT = {
-  show: "Show",
-  hide: "Hide",
-} as const;
+import { AUTH_TEXT } from "@/views/auth/AuthText";
 
 export function PasswordField(props: TextFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const visibilityLabel = showPassword
+    ? AUTH_TEXT.passwordVisibility.hide
+    : AUTH_TEXT.passwordVisibility.show;
 
   return (
     <TextField
@@ -26,17 +28,16 @@ export function PasswordField(props: TextFieldProps) {
           ...props.slotProps?.input,
           endAdornment: (
             <InputAdornment position="end">
-              <Link
-                component="button"
-                type="button"
-                aria-label={showPassword ? "Hide password" : "Show password"}
+              <Tooltip title={visibilityLabel}>
+                <IconButton
+                  aria-label={visibilityLabel}
                 aria-pressed={showPassword}
-                onClick={() => setShowPassword((visible) => !visible)}
-              >
-                {showPassword
-                  ? PASSWORD_VISIBILITY_TEXT.hide
-                  : PASSWORD_VISIBILITY_TEXT.show}
-              </Link>
+                  edge="end"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </Tooltip>
             </InputAdornment>
           ),
         },

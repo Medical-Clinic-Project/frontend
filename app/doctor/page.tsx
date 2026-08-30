@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function DoctorPage() {
-  return <RoleHome role="Doctor" />;
+  return <RoleHome />;
 }

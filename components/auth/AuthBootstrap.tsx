@@ -2,15 +2,23 @@
 
 import { useEffect } from "react";
 import { configureApiClientAuth } from "@/api/apiClient";
-import { authApi } from "@/api/authApi";
+import { refresh } from "@/api/authApi";
 import { useAuth } from "@/hooks/useAuth";
+import { ApiError } from "@/types/api";
 import { toAuthSession, type AuthResponse } from "@/types/auth";
 
 let initializationRequest: Promise<AuthResponse | null> | null = null;
 
 function restoreSession(): Promise<AuthResponse | null> {
   if (!initializationRequest) {
-    initializationRequest = authApi.refresh().catch(() => null);
+    initializationRequest = refresh().catch((error: unknown) => {
+      if (error instanceof ApiError && error.status === 401) {
+        return null;
+      }
+
+      initializationRequest = null;
+      throw error;
+    });
   }
 
   return initializationRequest;
@@ -29,7 +37,7 @@ export function AuthBootstrap() {
       configureApiClientAuth({
         getAccessToken: () => accessToken,
         refreshSession: async () => {
-          const response = await authApi.refresh();
+          const response = await refresh();
           setSession(toAuthSession(response));
           return response.accessToken;
         },
@@ -52,6 +60,14 @@ export function AuthBootstrap() {
         } else {
           clearSession();
         }
+      })
+      .catch((error: unknown) => {
+        if (!isActive) {
+          return;
+        }
+
+        console.error(error);
+        clearSession();
       })
       .finally(() => {
         if (isActive) {

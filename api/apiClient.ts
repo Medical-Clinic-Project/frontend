@@ -8,7 +8,7 @@ interface ApiClientAuthHandlers {
   clearSession: () => void;
 }
 
-interface ApiRequestOptions extends RequestInit {
+export interface ApiRequestOptions extends RequestInit {
   skipAuth?: boolean;
   skipAuthRefresh?: boolean;
 }
@@ -51,7 +51,11 @@ async function refreshAccessToken(): Promise<string | null> {
   if (!activeRefresh) {
     activeRefresh = authHandlers
       .refreshSession()
-      .catch(() => {
+      .catch((error: unknown) => {
+        if (!(error instanceof ApiError && error.status === 401)) {
+          console.error(error);
+        }
+
         authHandlers.clearSession();
         return null;
       })
@@ -89,13 +93,13 @@ async function readError(response: Response): Promise<ApiError> {
   return new ApiError(response.status, safeMessage, errorBody.errors);
 }
 
-async function parseResponse(response: Response): Promise<unknown> {
+async function parseResponse<TResponse>(response: Response): Promise<TResponse> {
   if (response.status === 204) {
-    return undefined;
+    return undefined as TResponse;
   }
 
   try {
-    return await response.json();
+    return (await response.json()) as TResponse;
   } catch {
     throw new ApiError(500, API_MESSAGES.invalidResponse);
   }
@@ -113,10 +117,10 @@ async function executeRequest(path: string, options: RequestInit): Promise<Respo
   }
 }
 
-export async function apiRequest(
+async function apiRequest<TResponse>(
   path: string,
   options: ApiRequestOptions = {},
-): Promise<unknown> {
+): Promise<TResponse> {
   const { skipAuth = false, skipAuthRefresh = false, ...requestOptions } = options;
   const headerOptions = { ...requestOptions, skipAuth };
   const initialToken = authHandlers.getAccessToken();
@@ -147,5 +151,55 @@ export async function apiRequest(
     throw await readError(response);
   }
 
-  return parseResponse(response);
+  return parseResponse<TResponse>(response);
 }
+
+function serializeBody(body: unknown): BodyInit | undefined {
+  if (body === undefined || body instanceof FormData) {
+    return body;
+  }
+
+  return JSON.stringify(body);
+}
+
+export const apiClient = {
+  get<TResponse>(path: string, options: ApiRequestOptions = {}) {
+    return apiRequest<TResponse>(path, { ...options, method: "GET" });
+  },
+  post<TResponse>(
+    path: string,
+    body?: unknown,
+    options: ApiRequestOptions = {},
+  ) {
+    return apiRequest<TResponse>(path, {
+      ...options,
+      method: "POST",
+      body: serializeBody(body),
+    });
+  },
+  put<TResponse>(
+    path: string,
+    body?: unknown,
+    options: ApiRequestOptions = {},
+  ) {
+    return apiRequest<TResponse>(path, {
+      ...options,
+      method: "PUT",
+      body: serializeBody(body),
+    });
+  },
+  patch<TResponse>(
+    path: string,
+    body?: unknown,
+    options: ApiRequestOptions = {},
+  ) {
+    return apiRequest<TResponse>(path, {
+      ...options,
+      method: "PATCH",
+      body: serializeBody(body),
+    });
+  },
+  delete<TResponse>(path: string, options: ApiRequestOptions = {}) {
+    return apiRequest<TResponse>(path, { ...options, method: "DELETE" });
+  },
+};
