@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DEPARTMENTS_TEXT } from "@/views/departments/Departments.text";
+import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
 
 export const departmentFormSchema = z.object({
   name: z

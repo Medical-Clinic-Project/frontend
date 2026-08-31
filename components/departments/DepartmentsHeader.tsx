@@ -1,5 +1,6 @@
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Button, Stack, TextField, Typography } from "@mui/material";
-import { DEPARTMENTS_TEXT } from "@/views/departments/Departments.text";
+import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
 
 interface DepartmentsHeaderProps {
   search: string;
@@ -15,19 +16,18 @@ export function DepartmentsHeader({
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography color="primary.main" sx={{ fontWeight: 700 }}>
+        <Typography variant="subtitle2" color="primary.main">
           {DEPARTMENTS_TEXT.eyebrow}
         </Typography>
-        <Typography component="h1" variant="h2">
-          {DEPARTMENTS_TEXT.title}
-        </Typography>
+        <Typography variant="h1">{DEPARTMENTS_TEXT.title}</Typography>
         <Typography color="text.secondary">{DEPARTMENTS_TEXT.subtitle}</Typography>
       </Stack>
 
       <Stack
         direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        useFlexGap
         sx={{
-          gap: 2,
           alignItems: { xs: "stretch", sm: "center" },
         }}
       >
@@ -39,7 +39,7 @@ export function DepartmentsHeader({
           onChange={(event) => onSearchChange(event.target.value)}
           sx={{ flex: 1 }}
         />
-        <Button size="small" onClick={onCreate}>
+        <Button size="small" startIcon={<AddOutlinedIcon />} onClick={onCreate}>
           {DEPARTMENTS_TEXT.createAction}
         </Button>
       </Stack>

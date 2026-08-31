@@ -1,4 +1,5 @@
 import { alpha, type Components, type Theme } from "@mui/material/styles";
+import type {} from "@mui/x-data-grid/themeAugmentation";
 
 export const components: Components<Theme> = {
   MuiCssBaseline: {
@@ -119,6 +120,18 @@ export const components: Components<Theme> = {
       root: {
         fontWeight: 500,
       },
+    },
+  },
+  MuiDataGrid: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        borderColor: theme.palette.divider,
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: theme.palette.background.paper,
+      }),
+      columnHeaders: ({ theme }) => ({
+        backgroundColor: alpha(theme.palette.primary.light, 0.08),
+      }),
     },
   },
 };

@@ -1,4 +1,4 @@
-import { apiRequest } from "@/api/apiClient";
+import { apiClient } from "@/api/apiClient";
 import { DEPARTMENT_ENDPOINTS } from "@/constants/api";
 import { API_MESSAGES } from "@/constants/apiMessages";
 import { ApiError } from "@/types/api";
@@ -42,34 +42,38 @@ function getDepartmentsPath(search?: string): string {
   return `${DEPARTMENT_ENDPOINTS.root}?${query.toString()}`;
 }
 
-export const departmentsApi = {
-  getAll: async (search?: string, signal?: AbortSignal) => {
-    const response = await apiRequest(getDepartmentsPath(search), { signal });
-    return validateDepartments(response);
-  },
-  getById: async (id: number) => {
-    const response = await apiRequest(DEPARTMENT_ENDPOINTS.byId(id));
-    return validateDepartment(response);
-  },
-  create: async (request: CreateDepartmentRequest) => {
-    const response = await apiRequest(DEPARTMENT_ENDPOINTS.root, {
-      method: "POST",
-      body: JSON.stringify(request),
-    });
-    return validateDepartment(response);
-  },
-  update: async (id: number, request: UpdateDepartmentRequest) => {
-    const response = await apiRequest(DEPARTMENT_ENDPOINTS.byId(id), {
-      method: "PUT",
-      body: JSON.stringify(request),
-    });
-    return validateDepartment(response);
-  },
-  updateStatus: async (id: number, request: UpdateDepartmentStatusRequest) => {
-    const response = await apiRequest(DEPARTMENT_ENDPOINTS.status(id), {
-      method: "PATCH",
-      body: JSON.stringify(request),
-    });
-    return validateDepartment(response);
-  },
-};
+export async function getDepartments(
+  search?: string,
+  signal?: AbortSignal,
+): Promise<Department[]> {
+  const response = await apiClient.get<unknown>(getDepartmentsPath(search), { signal });
+  return validateDepartments(response);
+}
+
+export async function getDepartmentById(id: number): Promise<Department> {
+  const response = await apiClient.get<unknown>(DEPARTMENT_ENDPOINTS.byId(id));
+  return validateDepartment(response);
+}
+
+export async function createDepartment(
+  request: CreateDepartmentRequest,
+): Promise<Department> {
+  const response = await apiClient.post<unknown>(DEPARTMENT_ENDPOINTS.root, request);
+  return validateDepartment(response);
+}
+
+export async function updateDepartment(
+  id: number,
+  request: UpdateDepartmentRequest,
+): Promise<Department> {
+  const response = await apiClient.put<unknown>(DEPARTMENT_ENDPOINTS.byId(id), request);
+  return validateDepartment(response);
+}
+
+export async function updateDepartmentStatus(
+  id: number,
+  request: UpdateDepartmentStatusRequest,
+): Promise<Department> {
+  const response = await apiClient.patch<unknown>(DEPARTMENT_ENDPOINTS.status(id), request);
+  return validateDepartment(response);
+}

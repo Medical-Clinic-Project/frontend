@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -15,43 +14,37 @@ import {
   TextField,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import {
+  DEPARTMENT_FORM_FIELDS,
+  EMPTY_DEPARTMENT_FORM_VALUES,
+} from "@/constants/departments";
 import type { ApiFieldErrors } from "@/types/api";
 import type { Department } from "@/types/department";
 import { applyApiFieldErrors } from "@/utils/forms/applyApiFieldErrors";
-import { DEPARTMENTS_TEXT } from "@/views/departments/Departments.text";
+import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
 import {
   departmentFormSchema,
   type DepartmentFormValues,
 } from "@/utils/validation/departmentValidation";
 
-const DEPARTMENT_FIELDS = ["name", "description", "isActive"] as const;
-
 interface DepartmentFormDialogProps {
   open: boolean;
   department: Department | null;
   fieldErrors: ApiFieldErrors;
-  submissionError: string | null;
   onClose: () => void;
   onSubmit: (values: DepartmentFormValues) => boolean | Promise<boolean>;
 }
-
-const EMPTY_VALUES: DepartmentFormValues = {
-  name: "",
-  description: "",
-  isActive: true,
-};
 
 export function DepartmentFormDialog({
   open,
   department,
   fieldErrors,
-  submissionError,
   onClose,
   onSubmit,
 }: DepartmentFormDialogProps) {
   const form = useForm<DepartmentFormValues>({
     resolver: zodResolver(departmentFormSchema),
-    defaultValues: EMPTY_VALUES,
+    defaultValues: EMPTY_DEPARTMENT_FORM_VALUES,
   });
   const { errors, isSubmitting } = form.formState;
   const isEditMode = Boolean(department);
@@ -68,7 +61,7 @@ export function DepartmentFormDialog({
             description: department.description,
             isActive: department.isActive,
           }
-        : EMPTY_VALUES,
+        : EMPTY_DEPARTMENT_FORM_VALUES,
     );
   }, [department, form, open]);
 
@@ -76,7 +69,7 @@ export function DepartmentFormDialog({
     applyApiFieldErrors<DepartmentFormValues>(
       fieldErrors,
       form.setError,
-      DEPARTMENT_FIELDS,
+      DEPARTMENT_FORM_FIELDS,
     );
   }, [fieldErrors, form.setError]);
 
@@ -94,9 +87,7 @@ export function DepartmentFormDialog({
             : DEPARTMENTS_TEXT.dialog.createTitle}
         </DialogTitle>
         <DialogContent>
-          <Stack spacing={3} sx={{ pt: 1 }}>
-            {submissionError && <Alert severity="error">{submissionError}</Alert>}
-
+          <Stack spacing={3}>
             <TextField
               label={DEPARTMENTS_TEXT.dialog.nameLabel}
               autoFocus

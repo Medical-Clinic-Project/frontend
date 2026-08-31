@@ -1,22 +1,27 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { departmentsApi } from "@/api/departmentsApi";
+import {
+  createDepartment,
+  getDepartments,
+  updateDepartment,
+  updateDepartmentStatus,
+} from "@/api/departmentsApi";
 import type { ApiFieldErrors } from "@/types/api";
 import { ApiError } from "@/types/api";
 import type { Department } from "@/types/department";
+import { useToast } from "@/hooks/useToast";
 import { getUserFacingError } from "@/utils/apiErrors";
 import type { DepartmentFormValues } from "@/utils/validation/departmentValidation";
-import { DEPARTMENTS_TEXT } from "@/views/departments/Departments.text";
+import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
 export function useDepartments() {
+  const { showToast } = useToast();
   const [departments, setDepartments] = useState<Department[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [operationError, setOperationError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
@@ -35,7 +40,7 @@ export function useDepartments() {
       setLoadError(null);
 
       try {
-        const loadedDepartments = await departmentsApi.getAll(searchTerm, signal);
+        const loadedDepartments = await getDepartments(searchTerm, signal);
 
         if (signal?.aborted) {
           return false;
@@ -83,20 +88,13 @@ export function useDepartments() {
     setLoadError(null);
   };
 
-  const clearFeedback = () => {
-    setOperationError(null);
-    setSuccessMessage(null);
-  };
-
   const openCreateDialog = () => {
-    clearFeedback();
     setFormFieldErrors({});
     setSelectedDepartment(null);
     setIsDialogOpen(true);
   };
 
   const openEditDialog = (department: Department) => {
-    clearFeedback();
     setFormFieldErrors({});
     setSelectedDepartment(department);
     setIsDialogOpen(true);
@@ -104,13 +102,11 @@ export function useDepartments() {
 
   const closeDialog = () => {
     setFormFieldErrors({});
-    setOperationError(null);
     setIsDialogOpen(false);
     setSelectedDepartment(null);
   };
 
   const saveDepartment = async (values: DepartmentFormValues): Promise<boolean> => {
-    clearFeedback();
     setFormFieldErrors({});
 
     const request = {
@@ -121,18 +117,18 @@ export function useDepartments() {
 
     try {
       if (selectedDepartment) {
-        const updatedDepartment = await departmentsApi.update(
+        const updatedDepartment = await updateDepartment(
           selectedDepartment.id,
           request,
         );
 
         await loadDepartments(search, false);
-        setSuccessMessage(DEPARTMENTS_TEXT.feedback.updated(updatedDepartment.name));
+        showToast(DEPARTMENTS_TEXT.feedback.updated(updatedDepartment.name));
       } else {
-        const createdDepartment = await departmentsApi.create(request);
+        const createdDepartment = await createDepartment(request);
 
         await loadDepartments(search, false);
-        setSuccessMessage(DEPARTMENTS_TEXT.feedback.created(createdDepartment.name));
+        showToast(DEPARTMENTS_TEXT.feedback.created(createdDepartment.name));
       }
 
       closeDialog();
@@ -141,38 +137,39 @@ export function useDepartments() {
       if (error instanceof ApiError) {
         if (error.status === 400 && Object.keys(error.fieldErrors).length) {
           setFormFieldErrors(error.fieldErrors);
+          showToast(error.message, "error");
           return false;
         }
 
         if (error.status === 409) {
           setFormFieldErrors({ name: [error.message] });
+          showToast(error.message, "error");
           return false;
         }
       }
 
-      setOperationError(getUserFacingError(error, DEPARTMENTS_TEXT.errors.save));
+      showToast(getUserFacingError(error, DEPARTMENTS_TEXT.errors.save), "error");
       return false;
     }
   };
 
   const toggleDepartmentStatus = async (department: Department): Promise<void> => {
-    clearFeedback();
     setStatusUpdatingId(department.id);
     const nextIsActive = !department.isActive;
 
     try {
-      const updatedDepartment = await departmentsApi.updateStatus(department.id, {
+      const updatedDepartment = await updateDepartmentStatus(department.id, {
         isActive: nextIsActive,
       });
 
       await loadDepartments(search, false);
-      setSuccessMessage(
+      showToast(
         updatedDepartment.isActive
           ? DEPARTMENTS_TEXT.feedback.activated(updatedDepartment.name)
           : DEPARTMENTS_TEXT.feedback.deactivated(updatedDepartment.name),
       );
     } catch (error) {
-      setOperationError(getUserFacingError(error, DEPARTMENTS_TEXT.errors.status));
+      showToast(getUserFacingError(error, DEPARTMENTS_TEXT.errors.status), "error");
     } finally {
       setStatusUpdatingId(null);
     }
@@ -185,7 +182,6 @@ export function useDepartments() {
     isLoading,
     retryLoadDepartments,
     loadError,
-    operationError,
     openCreateDialog,
     openEditDialog,
     closeDialog,
@@ -194,8 +190,6 @@ export function useDepartments() {
     selectedDepartment,
     setSearch: updateSearch,
     statusUpdatingId,
-    successMessage,
-    clearSuccessMessage: () => setSuccessMessage(null),
     toggleDepartmentStatus,
   };
 }

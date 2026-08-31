@@ -20,9 +20,11 @@ export const DEPARTMENTS_TEXT = {
     inactive: "Inactive",
   },
   actions: {
-    edit: "Edit",
-    activate: "Activate",
-    deactivate: "Deactivate",
+    edit: "Edit department",
+    activate: "Activate department",
+    deactivate: "Deactivate department",
+    activating: "Activating department",
+    deactivating: "Deactivating department",
   },
   empty: {
     title: "No departments yet",

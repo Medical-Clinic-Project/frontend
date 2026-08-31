@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import { DepartmentsHeader } from "@/components/departments/DepartmentsHeader";
 import { DepartmentFormDialog } from "@/components/dialogs/DepartmentFormDialog";
-import { DepartmentsTable } from "@/components/tables/DepartmentsTable";
+import { DepartmentsDataGrid } from "@/components/tables/DepartmentsDataGrid";
 import { useDepartments } from "@/hooks/useDepartments";
-import { DEPARTMENTS_TEXT } from "@/views/departments/Departments.text";
+import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
 
 function DepartmentsLoadingState() {
   return (
@@ -33,23 +33,13 @@ export function Departments() {
   const hasSearch = Boolean(departmentsState.search.trim());
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Container component="section" maxWidth="lg">
       <Stack spacing={4} sx={{ py: { xs: 4, md: 6 } }}>
         <DepartmentsHeader
           search={departmentsState.search}
           onSearchChange={departmentsState.setSearch}
           onCreate={departmentsState.openCreateDialog}
         />
-
-        {departmentsState.successMessage && (
-          <Alert severity="success" onClose={departmentsState.clearSuccessMessage}>
-            {departmentsState.successMessage}
-          </Alert>
-        )}
-
-        {departmentsState.operationError && (
-          <Alert severity="error">{departmentsState.operationError}</Alert>
-        )}
 
         {departmentsState.isLoading ? (
           <DepartmentsLoadingState />
@@ -69,7 +59,7 @@ export function Departments() {
             {departmentsState.loadError}
           </Alert>
         ) : departmentsState.departments.length ? (
-          <DepartmentsTable
+          <DepartmentsDataGrid
             departments={departmentsState.departments}
             onEdit={departmentsState.openEditDialog}
             onToggleStatus={departmentsState.toggleDepartmentStatus}
@@ -97,7 +87,6 @@ export function Departments() {
         open={departmentsState.isDialogOpen}
         department={departmentsState.selectedDepartment}
         fieldErrors={departmentsState.formFieldErrors}
-        submissionError={departmentsState.operationError}
         onClose={departmentsState.closeDialog}
         onSubmit={departmentsState.saveDepartment}
       />

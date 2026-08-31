@@ -1,0 +1,1 @@
+export const TOAST_AUTO_HIDE_DURATION_MS = 6000;
