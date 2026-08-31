@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { Patient } from "@/types/patient";
-import { PATIENTS_TEXT } from "@/views/patients/Patients.text";
+import { PATIENTS_TEXT } from "@/views/patients/PatientsText";
 
 interface PatientDetailsDialogProps {
   open: boolean;

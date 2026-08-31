@@ -49,31 +49,41 @@ function getPatientsPath(query?: PatientQuery): string {
     : PATIENT_ENDPOINTS.root;
 }
 
-export const patientsApi = {
-  getAll: async (query?: PatientQuery, signal?: AbortSignal) => {
-    const response = await apiClient.get<unknown>(getPatientsPath(query), { signal });
-    return validatePatients(response);
-  },
-  getById: async (id: number, signal?: AbortSignal) => {
-    const response = await apiClient.get<unknown>(PATIENT_ENDPOINTS.byId(id), { signal });
-    return validatePatient(response);
-  },
-  updateStatus: async (
-    id: number,
-    request: UpdatePatientStatusRequest,
-  ) => {
-    const response = await apiClient.patch<unknown>(
-      PATIENT_ENDPOINTS.status(id),
-      request,
-    );
-    return validatePatient(response);
-  },
-  getProfile: async (signal?: AbortSignal) => {
-    const response = await apiClient.get<unknown>(PATIENT_ENDPOINTS.me, { signal });
-    return validatePatient(response);
-  },
-  updateProfile: async (request: UpdatePatientProfileRequest) => {
-    const response = await apiClient.put<unknown>(PATIENT_ENDPOINTS.me, request);
-    return validatePatient(response);
-  },
-};
+export async function getPatients(
+  query?: PatientQuery,
+  signal?: AbortSignal,
+): Promise<Patient[]> {
+  const response = await apiClient.get<unknown>(getPatientsPath(query), { signal });
+  return validatePatients(response);
+}
+
+export async function getPatientById(
+  id: number,
+  signal?: AbortSignal,
+): Promise<Patient> {
+  const response = await apiClient.get<unknown>(PATIENT_ENDPOINTS.byId(id), { signal });
+  return validatePatient(response);
+}
+
+export async function updatePatientStatus(
+  id: number,
+  request: UpdatePatientStatusRequest,
+): Promise<Patient> {
+  const response = await apiClient.patch<unknown>(
+    PATIENT_ENDPOINTS.status(id),
+    request,
+  );
+  return validatePatient(response);
+}
+
+export async function getPatientProfile(signal?: AbortSignal): Promise<Patient> {
+  const response = await apiClient.get<unknown>(PATIENT_ENDPOINTS.me, { signal });
+  return validatePatient(response);
+}
+
+export async function updatePatientProfile(
+  request: UpdatePatientProfileRequest,
+): Promise<Patient> {
+  const response = await apiClient.put<unknown>(PATIENT_ENDPOINTS.me, request);
+  return validatePatient(response);
+}

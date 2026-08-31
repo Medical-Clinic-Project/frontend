@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Alert,
   Button,
   Chip,
   Paper,
@@ -12,45 +11,36 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { PATIENT_PROFILE_FIELDS } from "@/constants/patients";
 import type { ApiFieldErrors } from "@/types/api";
 import type { Patient } from "@/types/patient";
 import { applyApiFieldErrors } from "@/utils/forms/applyApiFieldErrors";
+import { getPatientProfileFormValues } from "@/utils/forms/patientProfileFormValues";
 import {
   patientProfileFormSchema,
   type PatientProfileFormValues,
 } from "@/utils/validation/patientProfileValidation";
-import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfile.text";
-
-const PATIENT_PROFILE_FIELDS = ["fullName", "email"] as const;
+import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfileText";
 
 interface PatientProfileFormProps {
   patient: Patient;
   fieldErrors: ApiFieldErrors;
-  submissionError: string | null;
   onSubmit: (values: PatientProfileFormValues) => Promise<boolean>;
-}
-
-function getPatientProfileValues(patient: Patient): PatientProfileFormValues {
-  return {
-    fullName: patient.fullName,
-    email: patient.email,
-  };
 }
 
 export function PatientProfileForm({
   patient,
   fieldErrors,
-  submissionError,
   onSubmit,
 }: PatientProfileFormProps) {
   const form = useForm<PatientProfileFormValues>({
     resolver: zodResolver(patientProfileFormSchema),
-    defaultValues: getPatientProfileValues(patient),
+    defaultValues: getPatientProfileFormValues(patient),
   });
   const { errors, isSubmitting } = form.formState;
 
   useEffect(() => {
-    form.reset(getPatientProfileValues(patient));
+    form.reset(getPatientProfileFormValues(patient));
   }, [form, patient]);
 
   useEffect(() => {
@@ -88,8 +78,6 @@ export function PatientProfileForm({
           </Typography>
         </Stack>
 
-        {submissionError && <Alert severity="error">{submissionError}</Alert>}
-
         <TextField
           label={PATIENT_PROFILE_TEXT.form.fullNameLabel}
           autoComplete="name"
@@ -112,8 +100,9 @@ export function PatientProfileForm({
 
         <Stack
           direction={{ xs: "column", sm: "row" }}
+          spacing={1}
+          useFlexGap
           sx={{
-            gap: 1,
             alignItems: { xs: "flex-start", sm: "center" },
             justifyContent: "space-between",
           }}

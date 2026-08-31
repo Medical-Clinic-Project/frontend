@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -8,13 +7,12 @@ import {
   Typography,
 } from "@mui/material";
 import type { Patient } from "@/types/patient";
-import { PATIENTS_TEXT } from "@/views/patients/Patients.text";
+import { PATIENTS_TEXT } from "@/views/patients/PatientsText";
 
 interface PatientStatusDialogProps {
   open: boolean;
   patient: Patient | null;
   isUpdating: boolean;
-  error: string | null;
   onClose: () => void;
   onConfirm: () => void | Promise<void>;
 }
@@ -23,7 +21,6 @@ export function PatientStatusDialog({
   open,
   patient,
   isUpdating,
-  error,
   onClose,
   onConfirm,
 }: PatientStatusDialogProps) {
@@ -43,19 +40,13 @@ export function PatientStatusDialog({
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        {error ? (
-          <Alert severity="error">{error}</Alert>
-        ) : (
-          <Typography color="text.secondary">
-            {patient
-              ? isDeactivation
-                ? PATIENTS_TEXT.statusDialog.deactivateDescription(
-                    patient.fullName,
-                  )
-                : PATIENTS_TEXT.statusDialog.activateDescription(patient.fullName)
-              : PATIENTS_TEXT.statusDialog.unavailable}
-          </Typography>
-        )}
+        <Typography color="text.secondary">
+          {patient
+            ? isDeactivation
+              ? PATIENTS_TEXT.statusDialog.deactivateDescription(patient.fullName)
+              : PATIENTS_TEXT.statusDialog.activateDescription(patient.fullName)
+            : PATIENTS_TEXT.statusDialog.unavailable}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button variant="text" disabled={isUpdating} onClick={onClose}>

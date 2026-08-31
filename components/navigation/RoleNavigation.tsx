@@ -37,9 +37,10 @@ export function RoleNavigation({
         <Toolbar disableGutters>
           <Stack
             direction={{ xs: "column", sm: "row" }}
+            spacing={{ xs: 1.5, sm: 3 }}
+            useFlexGap
             sx={{
               width: "100%",
-              gap: { xs: 1.5, sm: 3 },
               alignItems: { xs: "stretch", sm: "center" },
               justifyContent: "space-between",
               py: { xs: 1.5, sm: 0 },

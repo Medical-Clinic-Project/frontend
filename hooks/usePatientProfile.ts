@@ -1,23 +1,23 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { patientsApi } from "@/api/patientsApi";
+import { getPatientProfile, updatePatientProfile } from "@/api/patientsApi";
 import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/useToast";
 import type { ApiFieldErrors } from "@/types/api";
 import { ApiError } from "@/types/api";
 import type { Patient } from "@/types/patient";
 import { getUserFacingError } from "@/utils/apiErrors";
 import type { PatientProfileFormValues } from "@/utils/validation/patientProfileValidation";
-import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfile.text";
+import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfileText";
 
 export function usePatientProfile() {
   const { updateUser } = useAuth();
+  const { showToast } = useToast();
   const [patient, setPatient] = useState<Patient | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<ApiFieldErrors>({});
-  const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const profileLoadController = useRef<AbortController | null>(null);
   const isMounted = useRef(true);
 
@@ -26,7 +26,7 @@ export function usePatientProfile() {
     setLoadError(null);
 
     try {
-      const loadedPatient = await patientsApi.getProfile(signal);
+      const loadedPatient = await getPatientProfile(signal);
 
       if (!signal.aborted) {
         setPatient(loadedPatient);
@@ -72,11 +72,9 @@ export function usePatientProfile() {
     values: PatientProfileFormValues,
   ): Promise<boolean> => {
     setFieldErrors({});
-    setSubmissionError(null);
-    setSuccessMessage(null);
 
     try {
-      const updatedPatient = await patientsApi.updateProfile({
+      const updatedPatient = await updatePatientProfile({
         fullName: values.fullName.trim(),
         email: values.email.trim().toLowerCase(),
       });
@@ -92,7 +90,7 @@ export function usePatientProfile() {
         email: updatedPatient.email,
       });
 
-      setSuccessMessage(PATIENT_PROFILE_TEXT.feedback.updated);
+      showToast(PATIENT_PROFILE_TEXT.feedback.updated);
       return true;
     } catch (error) {
       if (!isMounted.current) {
@@ -111,8 +109,9 @@ export function usePatientProfile() {
         }
       }
 
-      setSubmissionError(
+      showToast(
         getUserFacingError(error, PATIENT_PROFILE_TEXT.errors.save),
+        "error",
       );
       return false;
     }
@@ -124,9 +123,6 @@ export function usePatientProfile() {
     loadError,
     retryLoadProfile: startProfileLoad,
     fieldErrors,
-    submissionError,
-    successMessage,
-    clearSuccessMessage: () => setSuccessMessage(null),
     saveProfile,
   };
 }

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfile.text";
+import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfileText";
 
 export const patientProfileFormSchema = z.object({
   fullName: z

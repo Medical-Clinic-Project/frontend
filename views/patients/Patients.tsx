@@ -11,19 +11,20 @@ import {
 import { PatientDetailsDialog } from "@/components/dialogs/PatientDetailsDialog";
 import { PatientStatusDialog } from "@/components/dialogs/PatientStatusDialog";
 import { PatientsHeader } from "@/components/patients/PatientsHeader";
-import { PatientsTableSkeleton } from "@/components/skeletons/PatientsTableSkeleton";
-import { PatientsTable } from "@/components/tables/PatientsTable";
+import { PatientsDataGridSkeleton } from "@/components/skeletons/PatientsDataGridSkeleton";
+import { PatientsDataGrid } from "@/components/tables/PatientsDataGrid";
+import { PATIENT_STATUS_FILTERS } from "@/constants/patients";
 import { usePatients } from "@/hooks/usePatients";
-import { PATIENTS_TEXT } from "@/views/patients/Patients.text";
+import { PATIENTS_TEXT } from "@/views/patients/PatientsText";
 
 export function Patients() {
   const patientsState = usePatients();
   const hasFilters =
     Boolean(patientsState.search.trim()) ||
-    patientsState.statusFilter !== "all";
+    patientsState.statusFilter !== PATIENT_STATUS_FILTERS.all;
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Container component="section" maxWidth="lg">
       <Stack spacing={4} sx={{ py: { xs: 4, md: 6 } }}>
         <PatientsHeader
           search={patientsState.search}
@@ -32,14 +33,8 @@ export function Patients() {
           onStatusFilterChange={patientsState.setStatusFilter}
         />
 
-        {patientsState.successMessage && (
-          <Alert severity="success" onClose={patientsState.clearSuccessMessage}>
-            {patientsState.successMessage}
-          </Alert>
-        )}
-
         {patientsState.isLoading ? (
-          <PatientsTableSkeleton />
+          <PatientsDataGridSkeleton />
         ) : patientsState.loadError ? (
           <Alert
             severity="error"
@@ -56,10 +51,11 @@ export function Patients() {
             {patientsState.loadError}
           </Alert>
         ) : patientsState.patients.length ? (
-          <PatientsTable
+          <PatientsDataGrid
             patients={patientsState.patients}
             onView={patientsState.openDetailsDialog}
             onRequestStatusChange={patientsState.openStatusDialog}
+            statusUpdatingId={patientsState.statusUpdatingId}
           />
         ) : (
           <Paper variant="outlined">
@@ -92,7 +88,6 @@ export function Patients() {
         open={patientsState.isStatusDialogOpen}
         patient={patientsState.statusPatient}
         isUpdating={patientsState.isStatusUpdating}
-        error={patientsState.statusError}
         onClose={patientsState.closeStatusDialog}
         onConfirm={patientsState.confirmStatusChange}
       />

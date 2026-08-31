@@ -28,6 +28,8 @@ export const PATIENTS_TEXT = {
     view: "View",
     activate: "Activate",
     deactivate: "Deactivate",
+    activating: "Activating",
+    deactivating: "Deactivating",
   },
   empty: {
     title: "No patients yet",

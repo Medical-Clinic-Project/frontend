@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PatientProfile } from "@/views/patientProfile/PatientProfile";
-import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfile.text";
+import { PATIENT_PROFILE_TEXT } from "@/views/patientProfile/PatientProfileText";
 
 export const metadata: Metadata = {
   title: PATIENT_PROFILE_TEXT.metadataTitle,

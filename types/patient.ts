@@ -1,8 +1,11 @@
 import { z } from "zod";
+import { PATIENT_STATUS_FILTERS } from "@/constants/patients";
 
-export const PATIENT_STATUS_FILTERS = ["all", "active", "inactive"] as const;
-
-export const patientStatusFilterSchema = z.enum(PATIENT_STATUS_FILTERS);
+export const patientStatusFilterSchema = z.enum([
+  PATIENT_STATUS_FILTERS.all,
+  PATIENT_STATUS_FILTERS.active,
+  PATIENT_STATUS_FILTERS.inactive,
+]);
 
 export const patientSchema = z.object({
   id: z.number().int().positive(),
@@ -14,7 +17,8 @@ export const patientSchema = z.object({
 export const patientsSchema = z.array(patientSchema);
 
 export type Patient = z.infer<typeof patientSchema>;
-export type PatientStatusFilter = z.infer<typeof patientStatusFilterSchema>;
+export type PatientStatusFilter =
+  (typeof PATIENT_STATUS_FILTERS)[keyof typeof PATIENT_STATUS_FILTERS];
 
 export interface PatientQuery {
   search?: string;
