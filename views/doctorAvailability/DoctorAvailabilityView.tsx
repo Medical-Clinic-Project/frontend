@@ -12,15 +12,13 @@ import { useDoctorAvailability } from "@/hooks/useDoctorAvailability";
 import {
   formatVisibleRange,
   getVisibleDays,
-} from "@/views/doctorAvailability/doctorAvailabilityDates";
-import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityView.text";
+} from "@/utils/doctorAvailability/dateTime";
+import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityText";
 import { AvailabilityCalendar } from "@/components/calendars/AvailabilityCalendar";
 import { AvailabilityFormDialog } from "@/components/dialogs/AvailabilityFormDialog";
 import { AvailabilityToolbar } from "@/components/calendars/AvailabilityToolbar";
 import { DeleteAvailabilityDialog } from "@/components/dialogs/DeleteAvailabilityDialog";
-import  DoctorsAvailabilityCalendarSkeleton  from "@/components/skeletons/DoctorsAvailabilityCalenderSkeleton";
-
-
+import { DoctorAvailabilityCalendarSkeleton } from "@/components/skeletons/DoctorAvailabilityCalendarSkeleton";
 
 export function DoctorAvailabilityView() {
   const availabilityState = useDoctorAvailability();
@@ -34,10 +32,10 @@ export function DoctorAvailabilityView() {
   );
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Container maxWidth="lg">
       <Stack spacing={4} sx={{ py: { xs: 4, md: 6 } }}>
         <Stack component="header" spacing={1}>
-          <Typography color="primary.main" sx={{ fontWeight: 700 }}>
+          <Typography variant="subtitle2" color="primary.main">
             {DOCTOR_AVAILABILITY_TEXT.eyebrow}
           </Typography>
           <Typography component="h1" variant="h2">
@@ -58,26 +56,8 @@ export function DoctorAvailabilityView() {
           onAdd={availabilityState.openCreateDialog}
         />
 
-        {availabilityState.successMessage && (
-          <Alert
-            severity="success"
-            onClose={availabilityState.clearSuccessMessage}
-          >
-            {availabilityState.successMessage}
-          </Alert>
-        )}
-
-        {availabilityState.operationError && (
-          <Alert
-            severity="error"
-            onClose={availabilityState.clearOperationError}
-          >
-            {availabilityState.operationError}
-          </Alert>
-        )}
-
         {availabilityState.isLoading ? (
-          <DoctorsAvailabilityCalendarSkeleton />
+          <DoctorAvailabilityCalendarSkeleton />
         ) : availabilityState.loadError ? (
           <Alert
             severity="error"
@@ -140,7 +120,6 @@ export function DoctorAvailabilityView() {
         availability={availabilityState.selectedAvailability}
         selectedDate={availabilityState.selectedDate}
         fieldErrors={availabilityState.formFieldErrors}
-        submissionError={availabilityState.formError}
         onClose={availabilityState.closeFormDialog}
         onDelete={availabilityState.requestDelete}
         onSubmit={availabilityState.saveAvailability}
@@ -150,7 +129,6 @@ export function DoctorAvailabilityView() {
         open={availabilityState.isDeleteOpen}
         availability={availabilityState.deleteAvailability}
         isDeleting={availabilityState.isDeleting}
-        error={availabilityState.deleteError}
         onClose={availabilityState.closeDeleteDialog}
         onConfirm={availabilityState.confirmDelete}
       />

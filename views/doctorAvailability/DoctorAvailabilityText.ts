@@ -21,6 +21,7 @@ export const DOCTOR_AVAILABILITY_TEXT = {
     dragHint: "Drag a slot to move it, or select it to edit.",
     slotLabel: (start: string, end: string) =>
       `Availability from ${start} to ${end}. Select to edit or drag to move.`,
+    slotTooltip: (start: string, end: string) => `${start} - ${end}`,
   },
   loading: "Loading availability...",
   empty: {

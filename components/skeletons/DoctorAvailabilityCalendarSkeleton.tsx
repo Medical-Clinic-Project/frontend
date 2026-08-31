@@ -1,7 +1,7 @@
-import {Paper , Stack, Skeleton} from "@mui/material";
-import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityView.text";
+import { Paper, Skeleton, Stack } from "@mui/material";
+import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityText";
 
-function DoctorsAvailabilityCalendarSkeleton() {
+export function DoctorAvailabilityCalendarSkeleton() {
   return (
     <Paper
       variant="outlined"
@@ -18,5 +18,3 @@ function DoctorsAvailabilityCalendarSkeleton() {
     </Paper>
   );
 }
-
-export default DoctorsAvailabilityCalendarSkeleton;

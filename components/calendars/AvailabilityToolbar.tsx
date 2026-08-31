@@ -6,8 +6,8 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import type { AvailabilityViewMode } from "@/views/doctorAvailability/doctorAvailabilityDates";
-import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityView.text";
+import type { AvailabilityViewMode } from "@/utils/doctorAvailability/dateTime";
+import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityText";
 
 interface AvailabilityToolbarProps {
   periodLabel: string;
@@ -33,8 +33,9 @@ export function AvailabilityToolbar({
       <Stack spacing={2.5} sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          useFlexGap
           sx={{
-            gap: 2,
             alignItems: { xs: "stretch", md: "center" },
             justifyContent: "space-between",
           }}
@@ -49,8 +50,9 @@ export function AvailabilityToolbar({
 
         <Stack
           direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          useFlexGap
           sx={{
-            gap: 2,
             alignItems: { xs: "stretch", sm: "center" },
             justifyContent: "space-between",
           }}

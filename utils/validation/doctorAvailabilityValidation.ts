@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { parseLocalDateTimeInput } from "@/views/doctorAvailability/doctorAvailabilityDates";
-import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityView.text";
+import { parseLocalDateTimeInput } from "@/utils/doctorAvailability/dateTime";
+import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityText";
 
 export const doctorAvailabilityFormSchema = z
   .object({

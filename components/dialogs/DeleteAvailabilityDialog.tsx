@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -8,14 +7,13 @@ import {
   Typography,
 } from "@mui/material";
 import type { DoctorAvailability } from "@/types/doctorAvailability";
-import { formatAvailabilityRange } from "@/views/doctorAvailability/doctorAvailabilityDates";
-import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityView.text";
+import { formatAvailabilityRange } from "@/utils/doctorAvailability/dateTime";
+import { DOCTOR_AVAILABILITY_TEXT } from "@/views/doctorAvailability/DoctorAvailabilityText";
 
 interface DeleteAvailabilityDialogProps {
   open: boolean;
   availability: DoctorAvailability | null;
   isDeleting: boolean;
-  error: string | null;
   onClose: () => void;
   onConfirm: () => void | Promise<void>;
 }
@@ -24,7 +22,6 @@ export function DeleteAvailabilityDialog({
   open,
   availability,
   isDeleting,
-  error,
   onClose,
   onConfirm,
 }: DeleteAvailabilityDialogProps) {
@@ -39,17 +36,13 @@ export function DeleteAvailabilityDialog({
         {DOCTOR_AVAILABILITY_TEXT.deleteDialog.title}
       </DialogTitle>
       <DialogContent>
-        {error ? (
-          <Alert severity="error">{error}</Alert>
-        ) : (
-          <Typography color="text.secondary">
-            {availability
-              ? DOCTOR_AVAILABILITY_TEXT.deleteDialog.description(
-                  formatAvailabilityRange(availability),
-                )
-              : DOCTOR_AVAILABILITY_TEXT.deleteDialog.unavailable}
-          </Typography>
-        )}
+        <Typography color="text.secondary">
+          {availability
+            ? DOCTOR_AVAILABILITY_TEXT.deleteDialog.description(
+                formatAvailabilityRange(availability),
+              )
+            : DOCTOR_AVAILABILITY_TEXT.deleteDialog.unavailable}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button variant="text" disabled={isDeleting} onClick={onClose}>

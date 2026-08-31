@@ -26,22 +26,41 @@ import {
   ADMIN_NAVIGATION_TEXT,
 } from "@/constants/navigation";
 
-interface AdminNavigationLinksProps {
-  onNavigate?: () => void;
-  pathname: string;
+interface SidebarNavigationText {
+  ariaLabel: string;
+  brand: string;
+  closeMenuLabel: string;
+  menuLabel: string;
+  section: string;
 }
 
-function AdminNavigationLinks({
+interface SidebarNavigationItem {
+  exact: boolean;
+  href: string;
+  icon: (typeof ADMIN_NAVIGATION_ITEMS)[number]["icon"];
+  label: string;
+}
+
+interface SidebarNavigationLinksProps {
+  onNavigate?: () => void;
+  pathname: string;
+  items: readonly SidebarNavigationItem[];
+  text: SidebarNavigationText;
+}
+
+function SidebarNavigationLinks({
   onNavigate,
   pathname,
-}: AdminNavigationLinksProps) {
+  items,
+  text,
+}: SidebarNavigationLinksProps) {
   return (
     <List
       component="nav"
-      aria-label={ADMIN_NAVIGATION_TEXT.ariaLabel}
+      aria-label={text.ariaLabel}
       disablePadding
     >
-      {ADMIN_NAVIGATION_ITEMS.map((item) => {
+      {items.map((item) => {
         const isActive = item.exact
           ? pathname === item.href
           : pathname === item.href ||
@@ -71,35 +90,47 @@ function AdminNavigationLinks({
   );
 }
 
-function AdminNavigationDrawerContent({
+function SidebarNavigationDrawerContent({
   onNavigate,
   pathname,
-}: AdminNavigationLinksProps) {
+  items,
+  text,
+}: SidebarNavigationLinksProps) {
   return (
     <Stack sx={{ height: "100%" }}>
       <Toolbar>
         <Stack spacing={0}>
           <Typography variant="h6">
-            {ADMIN_NAVIGATION_TEXT.brand}
+            {text.brand}
           </Typography>
 
           <Typography variant="caption" color="text.secondary">
-            {ADMIN_NAVIGATION_TEXT.section}
+            {text.section}
           </Typography>
         </Stack>
       </Toolbar>
 
       <Divider />
 
-      <AdminNavigationLinks
+      <SidebarNavigationLinks
         pathname={pathname}
         onNavigate={onNavigate}
+        items={items}
+        text={text}
       />
     </Stack>
   );
 }
 
-export function AdminNavigation() {
+interface SidebarNavigationProps {
+  items: readonly SidebarNavigationItem[];
+  text: SidebarNavigationText;
+}
+
+export function SidebarNavigation({
+  items,
+  text,
+}: SidebarNavigationProps) {
   const pathname = usePathname();
 
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] =
@@ -125,14 +156,14 @@ export function AdminNavigation() {
         <Toolbar>
           <IconButton
             edge="start"
-            aria-label={ADMIN_NAVIGATION_TEXT.menuLabel}
+            aria-label={text.menuLabel}
             onClick={() => setIsMobileDrawerOpen(true)}
           >
             <MenuOutlinedIcon />
           </IconButton>
 
           <Typography variant="h6">
-            {ADMIN_NAVIGATION_TEXT.brand}
+            {text.brand}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -148,11 +179,15 @@ export function AdminNavigation() {
         slotProps={{
           paper: {
             component: "aside",
-            "aria-label": ADMIN_NAVIGATION_TEXT.ariaLabel,
+            "aria-label": text.ariaLabel,
           },
         }}
       >
-        <AdminNavigationDrawerContent pathname={pathname} />
+        <SidebarNavigationDrawerContent
+          pathname={pathname}
+          items={items}
+          text={text}
+        />
       </Drawer>
 
       <Drawer
@@ -165,7 +200,7 @@ export function AdminNavigation() {
         slotProps={{
           paper: {
             component: "aside",
-            "aria-label": ADMIN_NAVIGATION_TEXT.ariaLabel,
+            "aria-label": text.ariaLabel,
           },
         }}
       >
@@ -174,18 +209,29 @@ export function AdminNavigation() {
           sx={{ justifyContent: "flex-end" }}
         >
           <IconButton
-            aria-label={ADMIN_NAVIGATION_TEXT.closeMenuLabel}
+            aria-label={text.closeMenuLabel}
             onClick={closeMobileDrawer}
           >
             <CloseOutlinedIcon />
           </IconButton>
         </Stack>
 
-        <AdminNavigationDrawerContent
+        <SidebarNavigationDrawerContent
           pathname={pathname}
           onNavigate={closeMobileDrawer}
+          items={items}
+          text={text}
         />
       </Drawer>
     </>
+  );
+}
+
+export function AdminNavigation() {
+  return (
+    <SidebarNavigation
+      items={ADMIN_NAVIGATION_ITEMS}
+      text={ADMIN_NAVIGATION_TEXT}
+    />
   );
 }

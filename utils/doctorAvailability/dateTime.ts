@@ -5,7 +5,8 @@ import type {
 
 export type AvailabilityViewMode = "day" | "week";
 
-const DAY_COUNT = 7;
+const DAYS_IN_WEEK = 7;
+
 function pad(value: number): string {
   return value.toString().padStart(2, "0");
 }
@@ -26,7 +27,7 @@ export function addDays(value: Date, days: number): Date {
 
 export function startOfLocalWeek(value: Date): Date {
   const day = value.getDay();
-  const daysSinceMonday = (day + 6) % DAY_COUNT;
+  const daysSinceMonday = (day + 6) % DAYS_IN_WEEK;
   return addDays(value, -daysSinceMonday);
 }
 
@@ -38,7 +39,7 @@ export function getVisibleDays(
     mode === "day"
       ? startOfLocalDay(selectedDate)
       : startOfLocalWeek(selectedDate);
-  const count = mode === "day" ? 1 : DAY_COUNT;
+  const count = mode === "day" ? 1 : DAYS_IN_WEEK;
 
   return Array.from({ length: count }, (_, index) =>
     addDays(firstDay, index),
@@ -64,7 +65,7 @@ export function navigateDate(
   mode: AvailabilityViewMode,
   direction: -1 | 1,
 ): Date {
-  return addDays(selectedDate, direction * (mode === "day" ? 1 : 7));
+  return addDays(selectedDate, direction * (mode === "day" ? 1 : DAYS_IN_WEEK));
 }
 
 export function formatVisibleRange(
