@@ -1,4 +1,4 @@
-import { RoleNavigation } from "@/components/navigation/RoleNavigation";
+import { SidebarNavigation } from "@/components/navigation/AdminNavigation";
 import {
   PATIENT_NAVIGATION_ITEMS,
   PATIENT_NAVIGATION_TEXT,
@@ -6,11 +6,9 @@ import {
 
 export function PatientNavigation() {
   return (
-    <RoleNavigation
-      brand={PATIENT_NAVIGATION_TEXT.brand}
-      section={PATIENT_NAVIGATION_TEXT.section}
-      ariaLabel={PATIENT_NAVIGATION_TEXT.ariaLabel}
+    <SidebarNavigation
       items={PATIENT_NAVIGATION_ITEMS}
+      text={PATIENT_NAVIGATION_TEXT}
     />
   );
 }

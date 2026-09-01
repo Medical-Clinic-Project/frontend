@@ -1,3 +1,4 @@
+import { Box, Stack } from "@mui/material";
 import { PermissionGuard } from "@/components/auth/PermissionGuard";
 import { PERMISSIONS } from "@/constants/accessControl";
 import { PatientNavigation } from "@/components/navigation/PatientNavigation";
@@ -9,8 +10,12 @@ export default function PatientLayout({ children }: { children: ReactNode }) {
       action={PERMISSIONS.accessPatientWorkspace.action}
       subject={PERMISSIONS.accessPatientWorkspace.subject}
     >
-      <PatientNavigation />
-      {children}
+      <Stack direction={{ xs: "column", md: "row" }} sx={{ minHeight: "100dvh" }}>
+        <PatientNavigation />
+        <Box component="main" sx={{ minWidth: 0, flexGrow: 1 }}>
+          {children}
+        </Box>
+      </Stack>
     </PermissionGuard>
   );
 }

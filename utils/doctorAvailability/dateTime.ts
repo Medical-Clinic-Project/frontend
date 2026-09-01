@@ -114,8 +114,12 @@ export function formatTime(value: Date): string {
 export function formatAvailabilityRange(
   availability: DoctorAvailability,
 ): string {
-  const start = new Date(availability.startTime);
-  const end = new Date(availability.endTime);
+  return formatDateTimeRange(availability.startTime, availability.endTime);
+}
+
+export function formatDateTimeRange(startTime: string, endTime: string): string {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
   const formatter = new Intl.DateTimeFormat(undefined, {
     month: "short",
     day: "numeric",

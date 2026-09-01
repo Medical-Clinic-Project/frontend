@@ -1,0 +1,19 @@
+import { Card, CardContent, Skeleton, Stack } from "@mui/material";
+
+export function PatientDoctorCardsSkeleton() {
+  return (
+    <Stack spacing={2} role="status" aria-live="polite" aria-busy="true">
+      {[0, 1, 2].map((index) => (
+        <Card key={index} variant="outlined">
+          <CardContent>
+            <Stack spacing={2}>
+              <Skeleton variant="text" width="40%" />
+              <Skeleton variant="rounded" width={120} height={24} />
+              <Skeleton variant="rounded" width={160} height={36} />
+            </Stack>
+          </CardContent>
+        </Card>
+      ))}
+    </Stack>
+  );
+}
