@@ -10,6 +10,7 @@ export const appointmentSchema = z.object({
   id: z.number().int().positive(),
   patientId: z.number().int().positive(),
   patientName: z.string(),
+  patientEmail: z.string().email(),
   doctorId: z.number().int().positive(),
   doctorName: z.string(),
   departmentId: z.number().int().positive(),
@@ -38,4 +39,8 @@ export interface CreateAppointmentRequest {
 export interface RescheduleAppointmentRequest {
   startTime: string;
   endTime: string;
+}
+
+export interface UpdateAppointmentStatusRequest {
+  status: AppointmentStatus;
 }

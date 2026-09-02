@@ -3,6 +3,8 @@ export const APPOINTMENT_DETAILS_DIALOG_TEXT = {
   loading: "Loading appointment details...",
   retry: "Try again",
   doctorLabel: "Doctor",
+  patientLabel: "Patient",
+  patientEmailLabel: "Patient email",
   departmentLabel: "Department",
   appointmentTimeLabel: "Appointment time",
   statusLabel: "Status",

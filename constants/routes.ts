@@ -10,6 +10,7 @@ export const APP_ROUTES = {
   adminPatients: "/admin/patients",
   doctor: "/doctor",
   doctorAvailability: "/doctor/availability",
+  doctorAppointments: "/doctor/appointments",
   patient: "/patient",
   patientProfile: "/patient/profile",
   patientDoctors: "/patient/doctors",
