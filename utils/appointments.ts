@@ -61,6 +61,25 @@ export function canUpdateDoctorAppointmentStatus(
   return false;
 }
 
+export function canUpdateAdminAppointmentStatus(
+  appointment: Appointment,
+  nextStatus: Exclude<AppointmentStatus, "Pending">,
+): boolean {
+  if (nextStatus === APPOINTMENT_STATUS_VALUES[1]) {
+    return canConfirmDoctorAppointment(appointment);
+  }
+
+  if (nextStatus === APPOINTMENT_STATUS_VALUES[2]) {
+    return canCompleteDoctorAppointment(appointment);
+  }
+
+  return canManagePatientAppointment(appointment);
+}
+
+export function canRescheduleAdminAppointment(appointment: Appointment): boolean {
+  return canManagePatientAppointment(appointment);
+}
+
 export function getPatientAppointmentTab(
   appointment: Appointment,
 ): PatientAppointmentTab {

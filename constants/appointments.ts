@@ -54,6 +54,24 @@ export const DOCTOR_APPOINTMENT_GRID_COLUMN_WIDTHS = {
   actions: 150,
 } as const;
 
+export const ADMIN_APPOINTMENT_GRID_FIELDS = {
+  patientName: "patientName",
+  doctorName: "doctorName",
+  departmentName: "departmentName",
+  appointmentTime: "startTime",
+  status: "status",
+  actions: "actions",
+} as const;
+
+export const ADMIN_APPOINTMENT_GRID_COLUMN_WIDTHS = {
+  patientName: 190,
+  doctorName: 190,
+  departmentName: 160,
+  appointmentTime: 220,
+  status: 130,
+  actions: 210,
+} as const;
+
 export const APPOINTMENT_REASON_MAX_LENGTH = 500;
 export const APPOINTMENT_NOTES_MAX_LENGTH = 2000;
 
