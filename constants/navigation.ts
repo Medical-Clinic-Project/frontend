@@ -10,18 +10,20 @@ export const ADMIN_NAVIGATION_TEXT = {
   brand: "Clinic Portal",
   section: "Admin",
   ariaLabel: "Admin navigation",
-
   menuLabel: "Open admin navigation",
   closeMenuLabel: "Close admin navigation",
+  collapseLabel: "Collapse admin navigation",
+  expandLabel: "Expand admin navigation",
+  signOutLabel: "Sign out",
+  signingOutLabel: "Signing out...",
 } as const;
 
-export const ADMIN_NAVIGATION_DRAWER_WIDTH = 280;
-
-
+export const SIDEBAR_NAVIGATION_DRAWER_WIDTH = 280;
+export const ADMIN_NAVIGATION_DRAWER_WIDTH = SIDEBAR_NAVIGATION_DRAWER_WIDTH;
 export const ADMIN_NAVIGATION_ITEMS = [
   {
     label: "Dashboard",
-    href: APP_ROUTES.admin,
+    href: APP_ROUTES.adminDashboard,
     exact: true,
 
     icon: DashboardOutlinedIcon,
@@ -61,21 +63,28 @@ export const PATIENT_NAVIGATION_TEXT = {
   ariaLabel: "Patient navigation",
   menuLabel: "Open patient navigation",
   closeMenuLabel: "Close patient navigation",
+  collapseLabel: "Collapse patient navigation",
+  expandLabel: "Expand patient navigation",
+  signOutLabel: "Sign out",
+  signingOutLabel: "Signing out...",
 } as const;
 
 export const DOCTOR_NAVIGATION_TEXT = {
   brand: "Clinic Portal",
   section: "Doctor",
   ariaLabel: "Doctor navigation",
-
   menuLabel: "Open doctor navigation",
   closeMenuLabel: "Close doctor navigation",
+  collapseLabel: "Collapse doctor navigation",
+  expandLabel: "Expand doctor navigation",
+  signOutLabel: "Sign out",
+  signingOutLabel: "Signing out...",
 } as const;
 
 export const DOCTOR_NAVIGATION_ITEMS = [
   {
     label: "Dashboard",
-    href: APP_ROUTES.doctor,
+    href: APP_ROUTES.doctorDashboard,
     exact: true,
     icon: DashboardOutlinedIcon,
   },

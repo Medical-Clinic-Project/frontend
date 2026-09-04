@@ -1,25 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getMyAppointments } from "@/api/appointmentsApi";
-import type { Appointment } from "@/types/appointment";
+import { getDoctorDashboard } from "@/api/dashboardApi";
+import type { DoctorDashboard } from "@/types/dashboard";
 import { getUserFacingError } from "@/utils/apiErrors";
-import { sortAppointmentsByStartTime } from "@/utils/appointments";
-import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointmentsText";
+import { DOCTOR_DASHBOARD_TEXT } from "@/views/doctorDashboard/DoctorDashboardText";
 
-interface UsePatientAppointmentListOptions {
-  loadErrorMessage?: string;
-}
-
-export function usePatientAppointmentList(
-  options: UsePatientAppointmentListOptions = {},
-) {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+export function useDoctorDashboard() {
+  const [dashboard, setDashboard] = useState<DoctorDashboard | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const loadController = useRef<AbortController | null>(null);
 
-  const refreshAppointments = useCallback(
+  const refreshDashboard = useCallback(
     async (showLoading = true): Promise<void> => {
       loadController.current?.abort();
       const controller = new AbortController();
@@ -31,18 +24,15 @@ export function usePatientAppointmentList(
       setLoadError(null);
 
       try {
-        const loadedAppointments = await getMyAppointments(controller.signal);
+        const loadedDashboard = await getDoctorDashboard(controller.signal);
 
         if (!controller.signal.aborted) {
-          setAppointments(sortAppointmentsByStartTime(loadedAppointments));
+          setDashboard(loadedDashboard);
         }
       } catch (error) {
         if (!controller.signal.aborted) {
           setLoadError(
-            getUserFacingError(
-              error,
-              options.loadErrorMessage ?? PATIENT_APPOINTMENTS_TEXT.errors.load,
-            ),
+            getUserFacingError(error, DOCTOR_DASHBOARD_TEXT.errors.load),
           );
         }
       } finally {
@@ -55,12 +45,12 @@ export function usePatientAppointmentList(
         }
       }
     },
-    [options.loadErrorMessage],
+    [],
   );
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      void refreshAppointments();
+      void refreshDashboard();
     }, 0);
 
     return () => {
@@ -68,12 +58,12 @@ export function usePatientAppointmentList(
       loadController.current?.abort();
       loadController.current = null;
     };
-  }, [refreshAppointments]);
+  }, [refreshDashboard]);
 
   return {
-    appointments,
+    dashboard,
     isLoading,
     loadError,
-    refreshAppointments,
+    refreshDashboard,
   };
 }
