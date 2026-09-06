@@ -46,7 +46,7 @@ export async function getDepartments(
   search?: string,
   signal?: AbortSignal,
 ): Promise<Department[]> {
-  const response = await apiClient.get<unknown>(getDepartmentsPath(search), { signal });
+  const response = await apiClient.get<Department[]>(getDepartmentsPath(search), { signal });
   return validateDepartments(response);
 }
 

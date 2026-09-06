@@ -120,12 +120,6 @@ export function AdminNavigation() {
           display: { xs: "none", md: "block" },
           width: ADMIN_NAVIGATION_DRAWER_WIDTH,
           flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: ADMIN_NAVIGATION_DRAWER_WIDTH,
-            boxSizing: "border-box",
-            borderRight: 1,
-            borderColor: "divider",
-          },
         }}
         slotProps={{
           paper: {
@@ -143,10 +137,6 @@ export function AdminNavigation() {
         onClose={closeMobileDrawer}
         sx={{
           display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": {
-            width: ADMIN_NAVIGATION_DRAWER_WIDTH,
-            boxSizing: "border-box",
-          },
         }}
         slotProps={{
           paper: {

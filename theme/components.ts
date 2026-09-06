@@ -1,5 +1,6 @@
 import { alpha, type Components, type Theme } from "@mui/material/styles";
 import type {} from "@mui/x-data-grid/themeAugmentation";
+import { ADMIN_NAVIGATION_DRAWER_WIDTH } from "@/constants/navigation";
 
 export const components: Components<Theme> = {
   MuiCssBaseline: {
@@ -74,6 +75,14 @@ export const components: Components<Theme> = {
             ? theme.shape.borderRadius * 2
             : theme.shape.borderRadius,
       }),
+    },
+  },
+  MuiDrawer: {
+    styleOverrides: {
+      paper: {
+        width: ADMIN_NAVIGATION_DRAWER_WIDTH,
+        boxSizing: "border-box",
+      },
     },
   },
   MuiAlert: {
