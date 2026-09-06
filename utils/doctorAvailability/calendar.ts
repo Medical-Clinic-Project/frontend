@@ -23,7 +23,6 @@ export interface AvailabilityCalendarSegment {
 
 export interface AvailabilityCalendarLayout {
   calendarHeight: number;
-  gridTemplateColumns: string;
   minimumWidth: number;
 }
 
@@ -95,7 +94,6 @@ export function getAvailabilityCalendarLayout(
   return {
     calendarHeight:
       (totalMinutes / 60) * DOCTOR_AVAILABILITY_CALENDAR_HOUR_HEIGHT,
-    gridTemplateColumns: `${DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH}px repeat(${dayCount}, minmax(${DOCTOR_AVAILABILITY_CALENDAR_DAY_MIN_WIDTH}px, 1fr))`,
     minimumWidth:
       DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH +
       dayCount * DOCTOR_AVAILABILITY_CALENDAR_DAY_MIN_WIDTH,

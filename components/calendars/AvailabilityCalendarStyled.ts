@@ -1,19 +1,16 @@
-import { Box, ButtonBase, Grid, Typography } from "@mui/material";
+import { Box, ButtonBase, Grid, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
   DOCTOR_AVAILABILITY_CALENDAR_HEADER_HEIGHT,
   DOCTOR_AVAILABILITY_CALENDAR_HOUR_HEIGHT,
+  DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH,
 } from "@/constants/doctorAvailability";
-
-interface CalendarGridProps {
-  gridTemplateColumns: string;
-}
 
 interface CalendarViewportProps {
   minimumWidth: number;
 }
 
-interface CalendarBodyGridProps extends CalendarGridProps {
+interface CalendarBodyGridProps {
   calendarHeight: number;
 }
 
@@ -37,16 +34,11 @@ export const CalendarViewport = styled(Box, {
   minWidth: minimumWidth,
 }));
 
-export const CalendarHeaderGrid = styled(Grid, {
-  shouldForwardProp: (prop) => prop !== "gridTemplateColumns",
-})<CalendarGridProps>(({ gridTemplateColumns, theme }) => ({
-  display: "grid",
-  gridTemplateColumns,
+export const CalendarHeaderGrid = styled(Grid)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
-export const CalendarHeaderCell = styled(Box)({
-  display: "flex",
+export const CalendarHeaderCell = styled(Stack)({
   minHeight: DOCTOR_AVAILABILITY_CALENDAR_HEADER_HEIGHT,
   alignItems: "center",
   justifyContent: "center",
@@ -57,16 +49,15 @@ export const CalendarDayHeaderCell = styled(CalendarHeaderCell)(({ theme }) => (
 }));
 
 export const CalendarBodyGrid = styled(Grid, {
-  shouldForwardProp: (prop) =>
-    prop !== "calendarHeight" && prop !== "gridTemplateColumns",
-})<CalendarBodyGridProps>(({ calendarHeight, gridTemplateColumns }) => ({
-  display: "grid",
-  gridTemplateColumns,
+  shouldForwardProp: (prop) => prop !== "calendarHeight",
+})<CalendarBodyGridProps>(({ calendarHeight }) => ({
   height: calendarHeight,
 }));
 
-export const CalendarTimeGutter = styled(Box)({
+export const CalendarTimeGutter = styled(Grid)({
   position: "relative",
+  width: DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH,
+  height: "100%",
 });
 
 export const CalendarTimeLabel = styled(Typography, {
@@ -80,11 +71,12 @@ export const CalendarTimeLabel = styled(Typography, {
   textAlign: "center",
 }));
 
-export const CalendarDayColumn = styled(Box)(({ theme }) => {
+export const CalendarDayColumn = styled(Grid)(({ theme }) => {
   const halfHourHeight = DOCTOR_AVAILABILITY_CALENDAR_HOUR_HEIGHT / 2;
 
   return {
     position: "relative",
+    height: "100%",
     borderLeft: `1px solid ${theme.palette.divider}`,
     backgroundImage: `repeating-linear-gradient(to bottom, transparent 0, transparent ${
       halfHourHeight - 1
@@ -105,13 +97,10 @@ export const AvailabilitySegmentButton = styled(ButtonBase, {
     top: segmentTop,
     insetInline: theme.spacing(0.5),
     zIndex: 1,
-    display: "flex",
     height: segmentHeight,
-    flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "flex-start",
     overflow: "hidden",
-    borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     opacity: isMoving ? 0.55 : 1,

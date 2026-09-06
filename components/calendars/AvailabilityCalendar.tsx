@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, type DragEvent } from "react";
-import { Paper, Stack, Tooltip, Typography } from "@mui/material";
+import { Grid, Paper, Stack, Tooltip, Typography } from "@mui/material";
 import {
+  DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH,
   DOCTOR_AVAILABILITY_DRAG_DATA_TYPE,
 } from "@/constants/doctorAvailability";
 import type { DoctorAvailability } from "@/types/doctorAvailability";
@@ -107,30 +108,38 @@ export function AvailabilityCalendar({
 
         <CalendarScrollArea>
           <CalendarViewport minimumWidth={calendarLayout.minimumWidth}>
-            <CalendarHeaderGrid
-              gridTemplateColumns={calendarLayout.gridTemplateColumns}
-            >
-              <CalendarHeaderCell>
-                <Typography variant="caption" color="text.secondary">
-                  {DOCTOR_AVAILABILITY_TEXT.calendar.time}
-                </Typography>
-              </CalendarHeaderCell>
-              {days.map((day) => (
-                <CalendarDayHeaderCell key={day.toISOString()}>
-                  <Typography
-                    variant={viewMode === "day" ? "body1" : "body2"}
-                  >
-                    {formatDayHeader(day)}
+            <CalendarHeaderGrid container wrap="nowrap">
+              <Grid
+                size="auto"
+                sx={{ width: DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH }}
+              >
+                <CalendarHeaderCell>
+                  <Typography variant="caption" color="text.secondary">
+                    {DOCTOR_AVAILABILITY_TEXT.calendar.time}
                   </Typography>
-                </CalendarDayHeaderCell>
-              ))}
+                </CalendarHeaderCell>
+              </Grid>
+              <Grid container size="grow" columns={days.length} wrap="nowrap">
+                {days.map((day) => (
+                  <Grid key={day.toISOString()} size={1}>
+                    <CalendarDayHeaderCell>
+                      <Typography
+                        variant={viewMode === "day" ? "body1" : "body2"}
+                      >
+                        {formatDayHeader(day)}
+                      </Typography>
+                    </CalendarDayHeaderCell>
+                  </Grid>
+                ))}
+              </Grid>
             </CalendarHeaderGrid>
 
             <CalendarBodyGrid
+              container
+              wrap="nowrap"
               calendarHeight={calendarLayout.calendarHeight}
-              gridTemplateColumns={calendarLayout.gridTemplateColumns}
             >
-              <CalendarTimeGutter>
+              <CalendarTimeGutter size="auto">
                 {hourMarkers.map((marker) => (
                   <CalendarTimeLabel
                     key={marker.hour}
@@ -143,67 +152,70 @@ export function AvailabilityCalendar({
                 ))}
               </CalendarTimeGutter>
 
-              {days.map((day, dayIndex) => (
-                <CalendarDayColumn
-                  key={day.toISOString()}
-                  onDragOver={(event) => {
-                    if (movingAvailabilityId === null) {
-                      event.preventDefault();
-                      event.dataTransfer.dropEffect = "move";
-                    }
-                  }}
-                  onDrop={(event) => handleDrop(event, day)}
-                >
-                  {segmentsByDay[dayIndex].map((segment) => {
-                    const { height, top } = getAvailabilitySegmentLayout(
-                      segment,
-                      startHour,
-                    );
-                    const { endLabel, startLabel } =
-                      getAvailabilitySegmentTimeLabels(segment);
-                    const isMoving =
-                      movingAvailabilityId === segment.availability.id;
+              <Grid container size="grow" columns={days.length} wrap="nowrap">
+                {days.map((day, dayIndex) => (
+                  <CalendarDayColumn
+                    key={day.toISOString()}
+                    size={1}
+                    onDragOver={(event) => {
+                      if (movingAvailabilityId === null) {
+                        event.preventDefault();
+                        event.dataTransfer.dropEffect = "move";
+                      }
+                    }}
+                    onDrop={(event) => handleDrop(event, day)}
+                  >
+                    {segmentsByDay[dayIndex].map((segment) => {
+                      const { height, top } = getAvailabilitySegmentLayout(
+                        segment,
+                        startHour,
+                      );
+                      const { endLabel, startLabel } =
+                        getAvailabilitySegmentTimeLabels(segment);
+                      const isMoving =
+                        movingAvailabilityId === segment.availability.id;
 
-                    return (
-                      <Tooltip
-                        key={`${segment.availability.id}-${dayIndex}`}
-                        title={DOCTOR_AVAILABILITY_TEXT.calendar.slotTooltip(
-                          startLabel,
-                          endLabel,
-                        )}
-                        arrow
-                      >
-                        <AvailabilitySegmentButton
-                          draggable={!isMoving}
-                          disabled={isMoving}
-                          aria-label={DOCTOR_AVAILABILITY_TEXT.calendar.slotLabel(
+                      return (
+                        <Tooltip
+                          key={`${segment.availability.id}-${dayIndex}`}
+                          title={DOCTOR_AVAILABILITY_TEXT.calendar.slotTooltip(
                             startLabel,
                             endLabel,
                           )}
-                          isMoving={isMoving}
-                          segmentHeight={height}
-                          segmentTop={top}
-                          onClick={() => onSelect(segment.availability)}
-                          onDragStart={(event) => {
-                            event.dataTransfer.effectAllowed = "move";
-                            event.dataTransfer.setData(
-                              DOCTOR_AVAILABILITY_DRAG_DATA_TYPE,
-                              segment.availability.id.toString(),
-                            );
-                          }}
+                          arrow
                         >
-                          <Typography variant="caption" color="inherit">
-                            {DOCTOR_AVAILABILITY_TEXT.calendar.slotTooltip(
+                          <AvailabilitySegmentButton
+                            draggable={!isMoving}
+                            disabled={isMoving}
+                            aria-label={DOCTOR_AVAILABILITY_TEXT.calendar.slotLabel(
                               startLabel,
                               endLabel,
                             )}
-                          </Typography>
-                        </AvailabilitySegmentButton>
-                      </Tooltip>
-                    );
-                  })}
-                </CalendarDayColumn>
-              ))}
+                            isMoving={isMoving}
+                            segmentHeight={height}
+                            segmentTop={top}
+                            onClick={() => onSelect(segment.availability)}
+                            onDragStart={(event) => {
+                              event.dataTransfer.effectAllowed = "move";
+                              event.dataTransfer.setData(
+                                DOCTOR_AVAILABILITY_DRAG_DATA_TYPE,
+                                segment.availability.id.toString(),
+                              );
+                            }}
+                          >
+                            <Typography variant="caption" color="inherit">
+                              {DOCTOR_AVAILABILITY_TEXT.calendar.slotTooltip(
+                                startLabel,
+                                endLabel,
+                              )}
+                            </Typography>
+                          </AvailabilitySegmentButton>
+                        </Tooltip>
+                      );
+                    })}
+                  </CalendarDayColumn>
+                ))}
+              </Grid>
             </CalendarBodyGrid>
           </CalendarViewport>
         </CalendarScrollArea>
