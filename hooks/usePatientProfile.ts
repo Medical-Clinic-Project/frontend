@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getPatientProfile, updatePatientProfile } from "@/api/patientsApi";
+import { getPatientProfile, updatePatient } from "@/api/patientsApi";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 import type { ApiFieldErrors } from "@/types/api";
@@ -73,8 +73,12 @@ export function usePatientProfile() {
   ): Promise<boolean> => {
     setFieldErrors({});
 
+    if (!patient) {
+      return false;
+    }
+
     try {
-      const updatedPatient = await updatePatientProfile({
+      const updatedPatient = await updatePatient(patient.id, {
         fullName: values.fullName.trim(),
         email: values.email.trim().toLowerCase(),
       });

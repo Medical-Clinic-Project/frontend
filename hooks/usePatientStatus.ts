@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { updatePatientStatus } from "@/api/patientsApi";
+import { updatePatient } from "@/api/patientsApi";
 import { useToast } from "@/hooks/useToast";
 import type { Patient } from "@/types/patient";
 import { getUserFacingError } from "@/utils/apiErrors";
@@ -46,7 +46,7 @@ export function usePatientStatus({ onStatusUpdated }: UsePatientStatusOptions) {
     setStatusUpdatingId(patientToUpdate.id);
 
     try {
-      const updatedPatient = await updatePatientStatus(patientToUpdate.id, {
+      const updatedPatient = await updatePatient(patientToUpdate.id, {
         isActive: !patientToUpdate.isActive,
       });
 

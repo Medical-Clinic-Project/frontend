@@ -25,11 +25,14 @@ export interface PatientQuery {
   isActive?: boolean;
 }
 
-export interface UpdatePatientStatusRequest {
-  isActive: boolean;
-}
-
-export interface UpdatePatientProfileRequest {
-  fullName: string;
-  email: string;
-}
+export type UpdatePatientRequest =
+  | {
+      fullName: string;
+      email: string;
+      isActive?: never;
+    }
+  | {
+      fullName?: never;
+      email?: never;
+      isActive: boolean;
+    };

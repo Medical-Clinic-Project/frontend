@@ -7,8 +7,7 @@ import {
   patientsSchema,
   type Patient,
   type PatientQuery,
-  type UpdatePatientProfileRequest,
-  type UpdatePatientStatusRequest,
+  type UpdatePatientRequest,
 } from "@/types/patient";
 
 function validatePatient(value: unknown): Patient {
@@ -65,14 +64,11 @@ export async function getPatientById(
   return validatePatient(response);
 }
 
-export async function updatePatientStatus(
+export async function updatePatient(
   id: number,
-  request: UpdatePatientStatusRequest,
+  request: UpdatePatientRequest,
 ): Promise<Patient> {
-  const response = await apiClient.patch<unknown>(
-    PATIENT_ENDPOINTS.status(id),
-    request,
-  );
+  const response = await apiClient.put<unknown>(PATIENT_ENDPOINTS.byId(id), request);
   return validatePatient(response);
 }
 
@@ -81,9 +77,3 @@ export async function getPatientProfile(signal?: AbortSignal): Promise<Patient> 
   return validatePatient(response);
 }
 
-export async function updatePatientProfile(
-  request: UpdatePatientProfileRequest,
-): Promise<Patient> {
-  const response = await apiClient.put<unknown>(PATIENT_ENDPOINTS.me, request);
-  return validatePatient(response);
-}
