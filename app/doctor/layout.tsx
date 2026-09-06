@@ -4,7 +4,10 @@ import type { ReactNode } from "react";
 
 export default function DoctorLayout({ children }: { children: ReactNode }) {
   return (
-    <PermissionGuard permission={PERMISSIONS.accessDoctorWorkspace}>
+    <PermissionGuard
+      action={PERMISSIONS.accessDoctorWorkspace.action}
+      subject={PERMISSIONS.accessDoctorWorkspace.subject}
+    >
       {children}
     </PermissionGuard>
   );

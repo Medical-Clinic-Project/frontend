@@ -4,7 +4,10 @@ import type { ReactNode } from "react";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <PermissionGuard permission={PERMISSIONS.accessAdminWorkspace}>
+    <PermissionGuard
+      action={PERMISSIONS.accessAdminWorkspace.action}
+      subject={PERMISSIONS.accessAdminWorkspace.subject}
+    >
       {children}
     </PermissionGuard>
   );

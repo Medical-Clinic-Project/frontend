@@ -45,7 +45,7 @@ export function Login() {
             {LOGIN_TEXT.submit}
           </Button>
 
-          <Typography color="text.secondary" sx={{ textAlign: "center" }}>
+          <Typography align="center" color="text.secondary">
             {LOGIN_TEXT.registerPrompt}{" "}
             <Link component={NextLink} href={APP_ROUTES.register}>
               {LOGIN_TEXT.registerAction}

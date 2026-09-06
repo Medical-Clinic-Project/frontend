@@ -21,7 +21,7 @@ export function RoleHome() {
     <Container maxWidth="md">
       <Stack
         spacing={3}
-        style={{ minHeight: "100dvh", justifyContent: "center" }}
+        sx={{ minHeight: "100dvh", justifyContent: "center" }}
       >
         {logoutError && <Alert severity="error">{logoutError}</Alert>}
 
@@ -43,7 +43,7 @@ export function RoleHome() {
               <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
-                style={{ justifyContent: "space-between" }}
+                sx={{ justifyContent: "space-between" }}
               >
                 <Typography variant="body2" color="text.secondary">
                   {ROLE_HOME_TEXT.signedInPrefix} {user?.email}

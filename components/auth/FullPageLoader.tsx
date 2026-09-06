@@ -6,7 +6,7 @@ export function FullPageLoader({ label = AUTH_TEXT.loadingSession }: { label?: s
     <Stack
       spacing={2}
       role="status"
-      style={{
+      sx={{
         minHeight: "100dvh",
         alignItems: "center",
         justifyContent: "center",
