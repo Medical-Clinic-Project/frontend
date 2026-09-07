@@ -15,13 +15,16 @@ import { ConfirmationDialog } from "@/components/dialogs/ConfirmationDialog";
 import { AppointmentDetailsDialog } from "@/components/dialogs/AppointmentDetailsDialog";
 import { AppointmentRescheduleDialog } from "@/components/dialogs/AppointmentRescheduleDialog";
 import { PatientAppointmentCardsSkeleton } from "@/components/skeletons/PatientAppointmentCardsSkeleton";
-import { PATIENT_APPOINTMENT_TAB_VALUES } from "@/constants/appointments";
+import {
+  PATIENT_APPOINTMENT_TABS,
+  PATIENT_APPOINTMENT_TAB_VALUES,
+} from "@/constants/appointments";
 import { usePatientAppointments } from "@/hooks/usePatientAppointments";
 import {
   getPatientAppointmentTab,
   type PatientAppointmentTab,
 } from "@/utils/appointments";
-import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointments.text";
+import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointmentsText";
 
 export function PatientAppointments() {
   const appointmentsState = usePatientAppointments();
@@ -57,9 +60,18 @@ export function PatientAppointments() {
               }
             }}
           >
-            <Tab label={PATIENT_APPOINTMENTS_TEXT.tabs.upcoming} value="upcoming" />
-            <Tab label={PATIENT_APPOINTMENTS_TEXT.tabs.completed} value="completed" />
-            <Tab label={PATIENT_APPOINTMENTS_TEXT.tabs.cancelled} value="cancelled" />
+            <Tab
+              label={PATIENT_APPOINTMENTS_TEXT.tabs.upcoming}
+              value={PATIENT_APPOINTMENT_TABS.UPCOMING}
+            />
+            <Tab
+              label={PATIENT_APPOINTMENTS_TEXT.tabs.completed}
+              value={PATIENT_APPOINTMENT_TABS.COMPLETED}
+            />
+            <Tab
+              label={PATIENT_APPOINTMENTS_TEXT.tabs.cancelled}
+              value={PATIENT_APPOINTMENT_TABS.CANCELLED}
+            />
           </Tabs>
         </Paper>
 
@@ -93,7 +105,7 @@ export function PatientAppointments() {
               spacing={1}
               sx={{ p: { xs: 3, sm: 5 }, alignItems: "center", textAlign: "center" }}
             >
-              <Typography component="h2" variant="h4">
+              <Typography variant="h4">
                 {emptyState.title}
               </Typography>
               <Typography color="text.secondary">{emptyState.description}</Typography>

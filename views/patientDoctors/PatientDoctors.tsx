@@ -43,7 +43,7 @@ export function PatientDoctors() {
               spacing={1}
               sx={{ p: { xs: 3, sm: 5 }, alignItems: "center", textAlign: "center" }}
             >
-              <Typography component="h2" variant="h4">
+              <Typography variant="h4">
                 {hasFilters
                   ? PATIENT_DOCTORS_TEXT.noResults.title
                   : PATIENT_DOCTORS_TEXT.empty.title}

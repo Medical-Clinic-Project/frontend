@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AvailabilityCalendar } from "@/components/calendars/AvailabilityCalendar";
-import { APPOINTMENT_SLOT_SELECTOR_TEXT } from "@/components/appointments/AppointmentSlotSelector.text";
+import { APPOINTMENT_SLOT_SELECTOR_TEXT } from "@/components/appointments/AppointmentSlotSelectorText";
 import { AppointmentSlotSelectorSkeleton } from "@/components/skeletons/AppointmentSlotSelectorSkeleton";
 import type { usePatientAvailability } from "@/hooks/usePatientAvailability";
 import type { DoctorAvailability } from "@/types/doctorAvailability";
@@ -50,7 +50,7 @@ export function AppointmentSlotSelector({
               justifyContent: "space-between",
             }}
           >
-            <Typography component="h2" variant="h4">
+            <Typography variant="h4">
               {periodLabel}
             </Typography>
             <ToggleButtonGroup
@@ -126,7 +126,7 @@ export function AppointmentSlotSelector({
               textAlign: "center",
             }}
           >
-            <Typography component="h3" variant="h5">
+            <Typography variant="h5">
               {APPOINTMENT_SLOT_SELECTOR_TEXT.empty.title}
             </Typography>
             <Typography color="text.secondary">

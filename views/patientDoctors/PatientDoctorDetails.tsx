@@ -70,7 +70,7 @@ export function PatientDoctorDetails({ doctorId }: PatientDoctorDetailsProps) {
             </Paper>
 
             <Stack spacing={2}>
-              <Typography component="h2" variant="h4">
+              <Typography variant="h4">
                 {PATIENT_DOCTORS_TEXT.details.availabilityTitle}
               </Typography>
               <AppointmentSlotSelector

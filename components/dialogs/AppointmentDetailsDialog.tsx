@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AppointmentStatusChip } from "@/components/appointments/AppointmentStatusChip";
-import { APPOINTMENT_DETAILS_DIALOG_TEXT } from "@/components/dialogs/AppointmentDetailsDialog.text";
+import { APPOINTMENT_DETAILS_DIALOG_TEXT } from "@/components/dialogs/AppointmentDetailsDialogText";
 import type { Appointment } from "@/types/appointment";
 import { formatDateTimeRange } from "@/utils/doctorAvailability/dateTime";
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PatientAppointments } from "@/views/patientAppointments/PatientAppointments";
-import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointments.text";
+import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointmentsText";
 
 export const metadata: Metadata = {
   title: PATIENT_APPOINTMENTS_TEXT.metadataTitle,

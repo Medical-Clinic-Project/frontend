@@ -18,7 +18,7 @@ import {
   APPOINTMENT_NOTES_MAX_LENGTH,
   APPOINTMENT_REASON_MAX_LENGTH,
 } from "@/constants/appointments";
-import { APPOINTMENT_BOOKING_DIALOG_TEXT } from "@/components/dialogs/AppointmentBookingDialog.text";
+import { APPOINTMENT_BOOKING_DIALOG_TEXT } from "@/components/dialogs/AppointmentBookingDialogText";
 import type { ApiFieldErrors } from "@/types/api";
 import type { PatientDoctor } from "@/types/patientDoctor";
 import type { DoctorAvailability } from "@/types/doctorAvailability";

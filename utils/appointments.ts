@@ -1,15 +1,15 @@
 import {
-  APPOINTMENT_STATUS_VALUES,
-  PATIENT_APPOINTMENT_TAB_VALUES,
+  APPOINTMENT_STATUSES,
+  PATIENT_APPOINTMENT_TABS,
 } from "@/constants/appointments";
 import type { Appointment, AppointmentStatus } from "@/types/appointment";
 
 export type PatientAppointmentTab =
-  (typeof PATIENT_APPOINTMENT_TAB_VALUES)[number];
+  (typeof PATIENT_APPOINTMENT_TABS)[keyof typeof PATIENT_APPOINTMENT_TABS];
 
 const actionableStatuses: readonly AppointmentStatus[] = [
-  APPOINTMENT_STATUS_VALUES[0],
-  APPOINTMENT_STATUS_VALUES[1],
+  APPOINTMENT_STATUSES.PENDING,
+  APPOINTMENT_STATUSES.CONFIRMED,
 ];
 
 export function canManagePatientAppointment(appointment: Appointment): boolean {
@@ -22,15 +22,15 @@ export function canManagePatientAppointment(appointment: Appointment): boolean {
 export function getPatientAppointmentTab(
   appointment: Appointment,
 ): PatientAppointmentTab {
-  if (appointment.status === APPOINTMENT_STATUS_VALUES[2]) {
-    return "completed";
+  if (appointment.status === APPOINTMENT_STATUSES.COMPLETED) {
+    return PATIENT_APPOINTMENT_TABS.COMPLETED;
   }
 
-  if (appointment.status === APPOINTMENT_STATUS_VALUES[3]) {
-    return "cancelled";
+  if (appointment.status === APPOINTMENT_STATUSES.CANCELLED) {
+    return PATIENT_APPOINTMENT_TABS.CANCELLED;
   }
 
-  return "upcoming";
+  return PATIENT_APPOINTMENT_TABS.UPCOMING;
 }
 
 export function sortAppointmentsByStartTime(

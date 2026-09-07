@@ -1,5 +1,5 @@
 import { Paper, Skeleton, Stack } from "@mui/material";
-import { APPOINTMENT_SLOT_SELECTOR_TEXT } from "@/components/appointments/AppointmentSlotSelector.text";
+import { APPOINTMENT_SLOT_SELECTOR_TEXT } from "@/components/appointments/AppointmentSlotSelectorText";
 
 export function AppointmentSlotSelectorSkeleton() {
   return (

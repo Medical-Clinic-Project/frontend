@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AppointmentSlotSelector } from "@/components/appointments/AppointmentSlotSelector";
-import { APPOINTMENT_RESCHEDULE_DIALOG_TEXT } from "@/components/dialogs/AppointmentRescheduleDialog.text";
+import { APPOINTMENT_RESCHEDULE_DIALOG_TEXT } from "@/components/dialogs/AppointmentRescheduleDialogText";
 import type { usePatientAvailability } from "@/hooks/usePatientAvailability";
 import type { Appointment } from "@/types/appointment";
 import type { DoctorAvailability } from "@/types/doctorAvailability";

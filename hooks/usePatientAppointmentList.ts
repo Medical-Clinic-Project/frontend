@@ -5,7 +5,7 @@ import { getMyAppointments } from "@/api/appointmentsApi";
 import type { Appointment } from "@/types/appointment";
 import { getUserFacingError } from "@/utils/apiErrors";
 import { sortAppointmentsByStartTime } from "@/utils/appointments";
-import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointments.text";
+import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointmentsText";
 
 export function usePatientAppointmentList() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);

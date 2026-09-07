@@ -1,14 +1,27 @@
+export const APPOINTMENT_STATUSES = {
+  PENDING: "Pending",
+  CONFIRMED: "Confirmed",
+  COMPLETED: "Completed",
+  CANCELLED: "Cancelled",
+} as const;
+
 export const APPOINTMENT_STATUS_VALUES = [
-  "Pending",
-  "Confirmed",
-  "Completed",
-  "Cancelled",
+  APPOINTMENT_STATUSES.PENDING,
+  APPOINTMENT_STATUSES.CONFIRMED,
+  APPOINTMENT_STATUSES.COMPLETED,
+  APPOINTMENT_STATUSES.CANCELLED,
 ] as const;
 
+export const PATIENT_APPOINTMENT_TABS = {
+  UPCOMING: "upcoming",
+  COMPLETED: "completed",
+  CANCELLED: "cancelled",
+} as const;
+
 export const PATIENT_APPOINTMENT_TAB_VALUES = [
-  "upcoming",
-  "completed",
-  "cancelled",
+  PATIENT_APPOINTMENT_TABS.UPCOMING,
+  PATIENT_APPOINTMENT_TABS.COMPLETED,
+  PATIENT_APPOINTMENT_TABS.CANCELLED,
 ] as const;
 
 export const APPOINTMENT_REASON_MAX_LENGTH = 500;

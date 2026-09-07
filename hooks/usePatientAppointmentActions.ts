@@ -11,7 +11,7 @@ import type { Appointment } from "@/types/appointment";
 import type { DoctorAvailability } from "@/types/doctorAvailability";
 import { getUserFacingError } from "@/utils/apiErrors";
 import { canManagePatientAppointment } from "@/utils/appointments";
-import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointments.text";
+import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointmentsText";
 
 interface UsePatientAppointmentActionsOptions {
   refreshAppointments: (showLoading?: boolean) => Promise<void>;

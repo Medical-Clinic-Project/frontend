@@ -6,7 +6,10 @@ import {
   DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH,
   DOCTOR_AVAILABILITY_DRAG_DATA_TYPE,
 } from "@/constants/doctorAvailability";
-import type { DoctorAvailability } from "@/types/doctorAvailability";
+import type {
+  AvailabilityCalendarInteraction,
+  DoctorAvailability,
+} from "@/types/doctorAvailability";
 import {
   getAvailabilityCalendarHourMarkers,
   getAvailabilityCalendarLayout,
@@ -34,8 +37,6 @@ import {
   CalendarTimeLabel,
   CalendarViewport,
 } from "./AvailabilityCalendarStyled";
-
-export type AvailabilityCalendarInteraction = "manage" | "select";
 
 export interface AvailabilityCalendarCopy {
   hint: string;

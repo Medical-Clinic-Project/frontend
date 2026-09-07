@@ -3,7 +3,7 @@ import {
   APPOINTMENT_NOTES_MAX_LENGTH,
   APPOINTMENT_REASON_MAX_LENGTH,
 } from "@/constants/appointments";
-import { APPOINTMENT_BOOKING_DIALOG_TEXT } from "@/components/dialogs/AppointmentBookingDialog.text";
+import { APPOINTMENT_BOOKING_DIALOG_TEXT } from "@/components/dialogs/AppointmentBookingDialogText";
 
 export const appointmentBookingFormSchema = z.object({
   reason: z.string().max(

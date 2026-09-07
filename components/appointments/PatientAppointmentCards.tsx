@@ -10,7 +10,7 @@ import { AppointmentStatusChip } from "@/components/appointments/AppointmentStat
 import type { Appointment } from "@/types/appointment";
 import { formatDateTimeRange } from "@/utils/doctorAvailability/dateTime";
 import { canManagePatientAppointment } from "@/utils/appointments";
-import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointments.text";
+import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointmentsText";
 
 interface PatientAppointmentCardsProps {
   appointments: readonly Appointment[];

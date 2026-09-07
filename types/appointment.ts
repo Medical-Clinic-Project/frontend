@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { APPOINTMENT_STATUS_VALUES } from "@/constants/appointments";
+import {
+  APPOINTMENT_STATUSES,
+  APPOINTMENT_STATUS_VALUES,
+} from "@/constants/appointments";
 
 export const appointmentStatusSchema = z.enum(APPOINTMENT_STATUS_VALUES);
 
@@ -20,7 +23,8 @@ export const appointmentSchema = z.object({
 
 export const appointmentsSchema = z.array(appointmentSchema);
 
-export type AppointmentStatus = z.infer<typeof appointmentStatusSchema>;
+export type AppointmentStatus =
+  (typeof APPOINTMENT_STATUSES)[keyof typeof APPOINTMENT_STATUSES];
 export type Appointment = z.infer<typeof appointmentSchema>;
 
 export interface CreateAppointmentRequest {

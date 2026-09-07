@@ -3,7 +3,7 @@ import { Card, CardContent, Skeleton, Stack } from "@mui/material";
 export function PatientDoctorCardsSkeleton() {
   return (
     <Stack spacing={2} role="status" aria-live="polite" aria-busy="true">
-      {[0, 1, 2].map((index) => (
+      {Array.from({ length: 3 }, (_, index) => (
         <Card key={index} variant="outlined">
           <CardContent>
             <Stack spacing={2}>

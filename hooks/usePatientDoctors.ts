@@ -44,18 +44,18 @@ export function usePatientDoctors() {
 
         setDoctors(loadedDoctors);
         setDiscoveredDepartments((current) => {
-          const byId = new Map(
+          const departmentsById = new Map(
             current.map((department) => [department.id, department]),
           );
 
           for (const doctor of loadedDoctors) {
-            byId.set(doctor.departmentId, {
+            departmentsById.set(doctor.departmentId, {
               id: doctor.departmentId,
               name: doctor.departmentName,
             });
           }
 
-          return [...byId.values()].sort((left, right) =>
+          return [...departmentsById.values()].sort((left, right) =>
             left.name.localeCompare(right.name),
           );
         });

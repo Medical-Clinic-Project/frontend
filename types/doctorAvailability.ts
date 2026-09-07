@@ -15,6 +15,8 @@ export type DoctorAvailability = z.infer<
   typeof doctorAvailabilitySchema
 >;
 
+export type AvailabilityCalendarInteraction = "manage" | "select";
+
 export interface DoctorAvailabilityRange {
   from: string;
   to: string;

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getAppointmentById } from "@/api/appointmentsApi";
 import type { Appointment } from "@/types/appointment";
 import { getUserFacingError } from "@/utils/apiErrors";
-import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointments.text";
+import { PATIENT_APPOINTMENTS_TEXT } from "@/views/patientAppointments/PatientAppointmentsText";
 
 export function usePatientAppointmentDetails() {
   const [appointment, setAppointment] = useState<Appointment | null>(null);
