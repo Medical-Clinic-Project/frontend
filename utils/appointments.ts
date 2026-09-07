@@ -65,11 +65,11 @@ export function canUpdateAdminAppointmentStatus(
   appointment: Appointment,
   nextStatus: Exclude<AppointmentStatus, "Pending">,
 ): boolean {
-  if (nextStatus === APPOINTMENT_STATUS_VALUES[1]) {
+  if (nextStatus === APPOINTMENT_STATUSES.CONFIRMED) {
     return canConfirmDoctorAppointment(appointment);
   }
 
-  if (nextStatus === APPOINTMENT_STATUS_VALUES[2]) {
+  if (nextStatus === APPOINTMENT_STATUSES.COMPLETED) {
     return canCompleteDoctorAppointment(appointment);
   }
 
