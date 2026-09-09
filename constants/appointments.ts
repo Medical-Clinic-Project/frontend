@@ -24,6 +24,36 @@ export const PATIENT_APPOINTMENT_TAB_VALUES = [
   PATIENT_APPOINTMENT_TABS.CANCELLED,
 ] as const;
 
+export const DOCTOR_APPOINTMENT_TABS = {
+  TODAY: "today",
+  UPCOMING: PATIENT_APPOINTMENT_TABS.UPCOMING,
+  COMPLETED: PATIENT_APPOINTMENT_TABS.COMPLETED,
+  CANCELLED: PATIENT_APPOINTMENT_TABS.CANCELLED,
+} as const;
+
+export const DOCTOR_APPOINTMENT_TAB_VALUES = [
+  DOCTOR_APPOINTMENT_TABS.TODAY,
+  DOCTOR_APPOINTMENT_TABS.UPCOMING,
+  DOCTOR_APPOINTMENT_TABS.COMPLETED,
+  DOCTOR_APPOINTMENT_TABS.CANCELLED,
+] as const;
+
+export const DOCTOR_APPOINTMENT_GRID_FIELDS = {
+  patientName: "patientName",
+  appointmentTime: "startTime",
+  status: "status",
+  reason: "reason",
+  actions: "actions",
+} as const;
+
+export const DOCTOR_APPOINTMENT_GRID_COLUMN_WIDTHS = {
+  patientName: 220,
+  appointmentTime: 220,
+  status: 130,
+  reason: 240,
+  actions: 150,
+} as const;
+
 export const APPOINTMENT_REASON_MAX_LENGTH = 500;
 export const APPOINTMENT_NOTES_MAX_LENGTH = 2000;
 

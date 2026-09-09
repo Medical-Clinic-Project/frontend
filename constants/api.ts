@@ -37,9 +37,14 @@ export const PATIENT_DOCTOR_ENDPOINTS = {
 export const APPOINTMENT_ENDPOINTS = {
   root: "/api/appointments",
   mine: "/api/appointments/mine",
+  today: "/api/appointments/today",
+  upcoming: "/api/appointments/upcoming",
+  completed: "/api/appointments/completed",
+  cancelled: "/api/appointments/cancelled",
   byId: (id: number) => `/api/appointments/${id}`,
   cancel: (id: number) => `/api/appointments/${id}/cancel`,
   reschedule: (id: number) => `/api/appointments/${id}/reschedule`,
+  status: (id: number) => `/api/appointments/${id}/status`,
 } as const;
 
 export const PATIENT_ENDPOINTS = {

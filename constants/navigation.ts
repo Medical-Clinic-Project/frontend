@@ -79,6 +79,12 @@ export const DOCTOR_NAVIGATION_ITEMS = [
     exact: false,
     icon: EventAvailableOutlinedIcon,
   },
+  {
+    label: "Appointments",
+    href: APP_ROUTES.doctorAppointments,
+    exact: false,
+    icon: EventAvailableOutlinedIcon,
+  },
 ] as const;
 
 export const PATIENT_NAVIGATION_ITEMS = [

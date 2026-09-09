@@ -17,6 +17,7 @@ import { formatDateTimeRange } from "@/utils/doctorAvailability/dateTime";
 interface AppointmentDetailsDialogProps {
   open: boolean;
   appointment: Appointment | null;
+  viewer?: "patient" | "doctor";
   isLoading: boolean;
   error: string | null;
   onClose: () => void;
@@ -26,6 +27,7 @@ interface AppointmentDetailsDialogProps {
 export function AppointmentDetailsDialog({
   open,
   appointment,
+  viewer = "patient",
   isLoading,
   error,
   onClose,
@@ -60,10 +62,23 @@ export function AppointmentDetailsDialog({
           </Alert>
         ) : appointment ? (
           <Stack spacing={2.5}>
-            <AppointmentDetailField
-              label={APPOINTMENT_DETAILS_DIALOG_TEXT.doctorLabel}
-              value={appointment.doctorName}
-            />
+            {viewer === "doctor" ? (
+              <>
+                <AppointmentDetailField
+                  label={APPOINTMENT_DETAILS_DIALOG_TEXT.patientLabel}
+                  value={appointment.patientName}
+                />
+                <AppointmentDetailField
+                  label={APPOINTMENT_DETAILS_DIALOG_TEXT.patientEmailLabel}
+                  value={appointment.patientEmail}
+                />
+              </>
+            ) : (
+              <AppointmentDetailField
+                label={APPOINTMENT_DETAILS_DIALOG_TEXT.doctorLabel}
+                value={appointment.doctorName}
+              />
+            )}
             <AppointmentDetailField
               label={APPOINTMENT_DETAILS_DIALOG_TEXT.departmentLabel}
               value={appointment.departmentName}
