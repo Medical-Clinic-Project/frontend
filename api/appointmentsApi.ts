@@ -44,14 +44,28 @@ function getAppointmentsPath(query?: AppointmentQuery): string {
     searchParams.set("status", query.status);
   }
 
-  for (const [name, value] of Object.entries({
-    doctorId: query?.doctorId,
-    patientId: query?.patientId,
-    departmentId: query?.departmentId,
-  })) {
-    if (typeof value === "number" && Number.isInteger(value) && value > 0) {
-      searchParams.set(name, value.toString());
-    }
+  if (
+    query?.doctorId !== undefined &&
+    Number.isInteger(query.doctorId) &&
+    query.doctorId > 0
+  ) {
+    searchParams.set("doctorId", query.doctorId.toString());
+  }
+
+  if (
+    query?.patientId !== undefined &&
+    Number.isInteger(query.patientId) &&
+    query.patientId > 0
+  ) {
+    searchParams.set("patientId", query.patientId.toString());
+  }
+
+  if (
+    query?.departmentId !== undefined &&
+    Number.isInteger(query.departmentId) &&
+    query.departmentId > 0
+  ) {
+    searchParams.set("departmentId", query.departmentId.toString());
   }
 
   if (query?.from) {

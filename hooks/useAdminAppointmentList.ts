@@ -2,12 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getAllAppointments } from "@/api/appointmentsApi";
+import { ADMIN_APPOINTMENT_SEARCH_DEBOUNCE_MS } from "@/constants/appointments";
 import type { Appointment, AppointmentQuery } from "@/types/appointment";
 import { getUserFacingError } from "@/utils/apiErrors";
 import { sortAppointmentsByStartTime } from "@/utils/appointments";
 import { ADMIN_APPOINTMENTS_TEXT } from "@/views/adminAppointments/AdminAppointmentsText";
-
-const SEARCH_DEBOUNCE_MS = 300;
 
 export function useAdminAppointmentList(query: AppointmentQuery) {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -52,7 +51,7 @@ export function useAdminAppointmentList(query: AppointmentQuery) {
   useEffect(() => {
     const timeoutId = window.setTimeout(
       () => void refreshAppointments(),
-      query.search ? SEARCH_DEBOUNCE_MS : 0,
+      query.search ? ADMIN_APPOINTMENT_SEARCH_DEBOUNCE_MS : 0,
     );
 
     return () => {

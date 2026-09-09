@@ -41,27 +41,9 @@ export function AdminAppointments() {
 
         <Paper variant="outlined">
           <AdminAppointmentFilters
-            search={appointmentsState.search}
-            status={appointmentsState.status}
-            doctorId={appointmentsState.doctorId}
-            departmentId={appointmentsState.departmentId}
-            appointmentDate={appointmentsState.appointmentDate}
-            selectedPatient={appointmentsState.selectedPatient}
-            patientSearch={appointmentsState.patientSearch}
-            departments={appointmentsState.departments}
-            doctors={appointmentsState.doctors}
-            patientOptions={appointmentsState.patientOptions}
-            isFilterOptionsLoading={appointmentsState.isFilterOptionsLoading}
-            isPatientOptionsLoading={appointmentsState.isPatientOptionsLoading}
-            hasFilters={appointmentsState.hasFilters}
-            onSearchChange={appointmentsState.setSearch}
-            onStatusChange={appointmentsState.setStatus}
-            onDoctorChange={appointmentsState.setDoctorId}
-            onDepartmentChange={appointmentsState.setDepartmentId}
-            onAppointmentDateChange={appointmentsState.setAppointmentDate}
-            onPatientChange={appointmentsState.setPatient}
-            onPatientSearchChange={appointmentsState.setPatientSearch}
-            onClear={appointmentsState.clearFilters}
+            filters={appointmentsState.filters}
+            options={appointmentsState.options}
+            actions={appointmentsState.actions}
           />
         </Paper>
 
@@ -124,12 +106,12 @@ export function AdminAppointments() {
           <Paper variant="outlined">
             <Stack spacing={1} sx={{ p: { xs: 3, sm: 5 }, textAlign: "center" }}>
               <Typography component="h2" variant="h4">
-                {appointmentsState.hasFilters
+                {appointmentsState.filters.hasFilters
                   ? ADMIN_APPOINTMENTS_TEXT.noResults.title
                   : ADMIN_APPOINTMENTS_TEXT.empty.title}
               </Typography>
               <Typography color="text.secondary">
-                {appointmentsState.hasFilters
+                {appointmentsState.filters.hasFilters
                   ? ADMIN_APPOINTMENTS_TEXT.noResults.description
                   : ADMIN_APPOINTMENTS_TEXT.empty.description}
               </Typography>

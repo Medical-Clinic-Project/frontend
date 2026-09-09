@@ -8,7 +8,7 @@ import type { Doctor } from "@/types/doctor";
 import type { Patient } from "@/types/patient";
 import { ADMIN_APPOINTMENTS_TEXT } from "@/views/adminAppointments/AdminAppointmentsText";
 
-interface AdminAppointmentFiltersProps {
+interface AdminAppointmentFilterValues {
   search: string;
   status: AppointmentStatus | null;
   doctorId: number | null;
@@ -16,20 +16,32 @@ interface AdminAppointmentFiltersProps {
   appointmentDate: string;
   selectedPatient: Patient | null;
   patientSearch: string;
+  hasFilters: boolean;
+}
+
+interface AdminAppointmentFilterOptions {
   departments: readonly Department[];
   doctors: readonly Doctor[];
   patientOptions: readonly Patient[];
   isFilterOptionsLoading: boolean;
   isPatientOptionsLoading: boolean;
-  hasFilters: boolean;
-  onSearchChange: (value: string) => void;
-  onStatusChange: (value: AppointmentStatus | null) => void;
-  onDoctorChange: (value: number | null) => void;
-  onDepartmentChange: (value: number | null) => void;
-  onAppointmentDateChange: (value: string) => void;
-  onPatientChange: (value: Patient | null) => void;
-  onPatientSearchChange: (value: string) => void;
-  onClear: () => void;
+}
+
+interface AdminAppointmentFilterActions {
+  setSearch: (value: string) => void;
+  setStatus: (value: AppointmentStatus | null) => void;
+  setDoctorId: (value: number | null) => void;
+  setDepartmentId: (value: number | null) => void;
+  setAppointmentDate: (value: string) => void;
+  setPatient: (value: Patient | null) => void;
+  setPatientSearch: (value: string) => void;
+  clearFilters: () => void;
+}
+
+interface AdminAppointmentFiltersProps {
+  filters: AdminAppointmentFilterValues;
+  options: AdminAppointmentFilterOptions;
+  actions: AdminAppointmentFilterActions;
 }
 
 function parseIdentifier(value: string): number | null {
@@ -48,28 +60,38 @@ function parseStatus(value: string): AppointmentStatus | null {
 }
 
 export function AdminAppointmentFilters({
-  search,
-  status,
-  doctorId,
-  departmentId,
-  appointmentDate,
-  selectedPatient,
-  patientSearch,
-  departments,
-  doctors,
-  patientOptions,
-  isFilterOptionsLoading,
-  isPatientOptionsLoading,
-  hasFilters,
-  onSearchChange,
-  onStatusChange,
-  onDoctorChange,
-  onDepartmentChange,
-  onAppointmentDateChange,
-  onPatientChange,
-  onPatientSearchChange,
-  onClear,
+  filters,
+  options,
+  actions,
 }: AdminAppointmentFiltersProps) {
+  const {
+    search,
+    status,
+    doctorId,
+    departmentId,
+    appointmentDate,
+    selectedPatient,
+    patientSearch,
+    hasFilters,
+  } = filters;
+  const {
+    departments,
+    doctors,
+    patientOptions,
+    isFilterOptionsLoading,
+    isPatientOptionsLoading,
+  } = options;
+  const {
+    setSearch,
+    setStatus,
+    setDoctorId,
+    setDepartmentId,
+    setAppointmentDate,
+    setPatient,
+    setPatientSearch,
+    clearFilters,
+  } = actions;
+
   return (
     <Stack spacing={2} sx={{ p: { xs: 2, sm: 3 } }}>
       <Stack direction={{ xs: "column", md: "row" }} spacing={2} useFlexGap>
@@ -78,7 +100,7 @@ export function AdminAppointmentFilters({
           placeholder={ADMIN_APPOINTMENTS_TEXT.filters.searchPlaceholder}
           size="small"
           value={search}
-          onChange={(event) => onSearchChange(event.target.value)}
+          onChange={(event) => setSearch(event.target.value)}
           sx={{ flex: 2, minWidth: 0 }}
         />
         <TextField
@@ -86,7 +108,7 @@ export function AdminAppointmentFilters({
           label={ADMIN_APPOINTMENTS_TEXT.filters.statusLabel}
           size="small"
           value={status ?? ""}
-          onChange={(event) => onStatusChange(parseStatus(event.target.value))}
+          onChange={(event) => setStatus(parseStatus(event.target.value))}
           sx={{ flex: 1, minWidth: 0 }}
         >
           <MenuItem value="">{ADMIN_APPOINTMENTS_TEXT.filters.allStatuses}</MenuItem>
@@ -102,7 +124,7 @@ export function AdminAppointmentFilters({
           size="small"
           value={departmentId ?? ""}
           disabled={isFilterOptionsLoading}
-          onChange={(event) => onDepartmentChange(parseIdentifier(event.target.value))}
+          onChange={(event) => setDepartmentId(parseIdentifier(event.target.value))}
           sx={{ flex: 1, minWidth: 0 }}
         >
           <MenuItem value="">{ADMIN_APPOINTMENTS_TEXT.filters.allDepartments}</MenuItem>
@@ -121,7 +143,7 @@ export function AdminAppointmentFilters({
           size="small"
           value={doctorId ?? ""}
           disabled={isFilterOptionsLoading}
-          onChange={(event) => onDoctorChange(parseIdentifier(event.target.value))}
+          onChange={(event) => setDoctorId(parseIdentifier(event.target.value))}
           sx={{ flex: 1, minWidth: 0 }}
         >
           <MenuItem value="">{ADMIN_APPOINTMENTS_TEXT.filters.allDoctors}</MenuItem>
@@ -142,10 +164,10 @@ export function AdminAppointmentFilters({
           }
           isOptionEqualToValue={(option, value) => option.id === value.id}
           noOptionsText={ADMIN_APPOINTMENTS_TEXT.filters.noPatients}
-          onChange={(_, value) => onPatientChange(value)}
+          onChange={(_, value) => setPatient(value)}
           onInputChange={(_, value, reason) => {
             if (reason !== "reset") {
-              onPatientSearchChange(value);
+              setPatientSearch(value);
             }
           }}
           renderInput={(params) => (
@@ -163,7 +185,7 @@ export function AdminAppointmentFilters({
           size="small"
           type="date"
           value={appointmentDate}
-          onChange={(event) => onAppointmentDateChange(event.target.value)}
+          onChange={(event) => setAppointmentDate(event.target.value)}
           slotProps={{ inputLabel: { shrink: true } }}
           sx={{ flex: 1, minWidth: 0 }}
         />
@@ -171,7 +193,7 @@ export function AdminAppointmentFilters({
           size="small"
           variant="text"
           disabled={!hasFilters}
-          onClick={onClear}
+          onClick={clearFilters}
         >
           {ADMIN_APPOINTMENTS_TEXT.filters.clear}
         </Button>
