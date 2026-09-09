@@ -5,11 +5,13 @@ export const APP_ROUTES = {
   login: "/login",
   register: "/register",
   admin: "/admin",
+  adminDashboard: "/admin/dashboard",
   adminDepartments: "/admin/departments",
   adminDoctors: "/admin/doctors",
   adminPatients: "/admin/patients",
   adminAppointments: "/admin/appointments",
   doctor: "/doctor",
+  doctorDashboard: "/doctor/dashboard",
   doctorAvailability: "/doctor/availability",
   doctorAppointments: "/doctor/appointments",
   patient: "/patient",
@@ -20,7 +22,7 @@ export const APP_ROUTES = {
 } as const;
 
 export const ROLE_HOME: Record<UserRole, string> = {
-  Admin: APP_ROUTES.admin,
-  Doctor: APP_ROUTES.doctor,
+  Admin: APP_ROUTES.adminDashboard,
+  Doctor: APP_ROUTES.doctorDashboard,
   Patient: APP_ROUTES.patient,
 };

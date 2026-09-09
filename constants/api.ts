@@ -12,6 +12,11 @@ export const AUTH_ENDPOINTS = {
   logout: "/api/auth/logout",
 } as const;
 
+export const DASHBOARD_ENDPOINTS = {
+  admin: "/api/dashboard/admin",
+  doctor: "/api/dashboard/doctor",
+} as const;
+
 export const DEPARTMENT_ENDPOINTS = {
   root: "/api/departments",
   byId: (id: number) => `/api/departments/${id}`,

@@ -1,4 +1,6 @@
-import { SidebarNavigation } from "@/components/navigation/AdminNavigation";
+"use client";
+
+import { SidebarNavigation } from "@/components/navigation/SidebarNavigation";
 import {
   DOCTOR_NAVIGATION_ITEMS,
   DOCTOR_NAVIGATION_TEXT,

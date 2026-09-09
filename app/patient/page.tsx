@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { RoleHome } from "@/views/dashboard/RoleHome";
+import { PatientHome } from "@/views/patientHome/PatientHome";
+import { PATIENT_HOME_TEXT } from "@/views/patientHome/PatientHomeText";
 
 export const metadata: Metadata = {
-  title: "Patient workspace",
+  title: PATIENT_HOME_TEXT.metadataTitle,
 };
 
 export default function PatientPage() {
-  return <RoleHome />;
+  return <PatientHome />;
 }
