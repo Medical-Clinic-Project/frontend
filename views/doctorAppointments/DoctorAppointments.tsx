@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  Alert,
-  Button,
   Container,
   Paper,
   Stack,
@@ -10,10 +8,9 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
+import { DoctorAppointmentsContent } from "@/components/appointments/DoctorAppointmentsContent";
 import { AppointmentDetailsDialog } from "@/components/dialogs/AppointmentDetailsDialog";
 import { ConfirmationDialog } from "@/components/dialogs/ConfirmationDialog";
-import { TableSkeleton } from "@/components/skeletons/TableSkeleton";
-import { DoctorAppointmentsDataGrid } from "@/components/tables/DoctorAppointmentsDataGrid";
 import {
   APPOINTMENT_STATUSES,
   DOCTOR_APPOINTMENT_TABS,
@@ -25,11 +22,14 @@ import { DOCTOR_APPOINTMENTS_TEXT } from "@/views/doctorAppointments/DoctorAppoi
 
 export function DoctorAppointments() {
   const appointmentsState = useDoctorAppointments();
-  const emptyState = DOCTOR_APPOINTMENTS_TEXT.empty[appointmentsState.tab];
   const statusUpdateTarget = appointmentsState.statusUpdateTarget;
   const statusDialog = statusUpdateTarget
     ? DOCTOR_APPOINTMENTS_TEXT.statusDialogs[statusUpdateTarget.status]
     : null;
+  const statusUpdatingId =
+    appointmentsState.isUpdatingStatus && statusUpdateTarget
+      ? statusUpdateTarget.appointment.id
+      : null;
 
   return (
     <Container component="main" maxWidth="lg">
@@ -77,49 +77,16 @@ export function DoctorAppointments() {
           </Tabs>
         </Paper>
 
-        {appointmentsState.isLoading ? (
-          <TableSkeleton label={DOCTOR_APPOINTMENTS_TEXT.loading} rows={4} />
-        ) : appointmentsState.loadError ? (
-          <Alert
-            severity="error"
-            action={
-              <Button
-                color="inherit"
-                size="small"
-                onClick={() => void appointmentsState.refreshAppointments()}
-              >
-                {DOCTOR_APPOINTMENTS_TEXT.retry}
-              </Button>
-            }
-          >
-            {appointmentsState.loadError}
-          </Alert>
-        ) : appointmentsState.appointments.length ? (
-          <DoctorAppointmentsDataGrid
-            appointments={appointmentsState.appointments}
-            onView={appointmentsState.openDetailsDialog}
-            onRequestStatusUpdate={appointmentsState.requestStatusUpdate}
-            statusUpdatingId={
-              appointmentsState.isUpdatingStatus && statusUpdateTarget
-                ? statusUpdateTarget.appointment.id
-                : null
-            }
-          />
-        ) : (
-          <Paper variant="outlined">
-            <Stack
-              spacing={1}
-              sx={{ p: { xs: 3, sm: 5 }, alignItems: "center", textAlign: "center" }}
-            >
-              <Typography component="h2" variant="h4">
-                {emptyState.title}
-              </Typography>
-              <Typography color="text.secondary">
-                {emptyState.description}
-              </Typography>
-            </Stack>
-          </Paper>
-        )}
+        <DoctorAppointmentsContent
+          appointments={appointmentsState.appointments}
+          emptyState={DOCTOR_APPOINTMENTS_TEXT.empty[appointmentsState.tab]}
+          isLoading={appointmentsState.isLoading}
+          loadError={appointmentsState.loadError}
+          onRequestStatusUpdate={appointmentsState.requestStatusUpdate}
+          onRetry={appointmentsState.refreshAppointments}
+          onView={appointmentsState.openDetailsDialog}
+          statusUpdatingId={statusUpdatingId}
+        />
       </Stack>
 
       <AppointmentDetailsDialog

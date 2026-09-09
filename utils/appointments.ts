@@ -4,6 +4,7 @@ import {
   PATIENT_APPOINTMENT_TABS,
 } from "@/constants/appointments";
 import type { Appointment, AppointmentStatus } from "@/types/appointment";
+import { DOCTOR_APPOINTMENTS_TEXT } from "@/views/doctorAppointments/DoctorAppointmentsText";
 
 export type PatientAppointmentTab =
   (typeof PATIENT_APPOINTMENT_TABS)[keyof typeof PATIENT_APPOINTMENT_TABS];
@@ -83,4 +84,16 @@ export function sortAppointmentsByStartTime(
 
     return timeDifference || left.id - right.id;
   });
+}
+
+export function getStatusUpdatingLabel(status: AppointmentStatus): string {
+  if (status === APPOINTMENT_STATUSES.PENDING) {
+    return DOCTOR_APPOINTMENTS_TEXT.actions.confirming;
+  }
+
+  if (status === APPOINTMENT_STATUSES.CONFIRMED) {
+    return DOCTOR_APPOINTMENTS_TEXT.actions.completing;
+  }
+
+  return DOCTOR_APPOINTMENTS_TEXT.actions.cancelling;
 }
