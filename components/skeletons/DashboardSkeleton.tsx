@@ -8,7 +8,7 @@ export function DashboardSkeleton({ label }: DashboardSkeletonProps) {
   return (
     <Stack spacing={3} role="status" aria-live="polite" aria-busy="true" aria-label={label}>
       <Grid container spacing={3}>
-        {[0, 1, 2, 3].map((index) => (
+        {Array.from({ length: 4 }, (_, index) => (
           <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
             <Card>
               <CardContent>
@@ -23,7 +23,7 @@ export function DashboardSkeleton({ label }: DashboardSkeletonProps) {
       </Grid>
 
       <Grid container spacing={3}>
-        {[0, 1, 2].map((index) => (
+        {Array.from({ length: 3 }, (_, index) => (
           <Grid key={index} size={{ xs: 12, lg: index === 2 ? 12 : 6 }}>
             <Card>
               <CardContent>

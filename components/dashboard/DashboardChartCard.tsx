@@ -1,15 +1,20 @@
 import { Card, CardContent, Stack, Typography } from "@mui/material";
 import { useId, type ReactNode } from "react";
+import { DashboardChartEmptyState } from "@/components/dashboard/DashboardChartEmptyState";
 
 interface DashboardChartCardProps {
   title: string;
   description?: string;
+  hasData: boolean;
+  emptyMessage: string;
   children: ReactNode;
 }
 
 export function DashboardChartCard({
   title,
   description,
+  hasData,
+  emptyMessage,
   children,
 }: DashboardChartCardProps) {
   const titleId = useId();
@@ -28,7 +33,7 @@ export function DashboardChartCard({
               </Typography>
             )}
           </Stack>
-          {children}
+          {hasData ? children : <DashboardChartEmptyState message={emptyMessage} />}
         </Stack>
       </CardContent>
     </Card>

@@ -3,7 +3,7 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 import { useTheme } from "@mui/material/styles";
 import { DashboardChartCard } from "@/components/dashboard/DashboardChartCard";
-import { DashboardChartEmptyState } from "@/components/dashboard/DashboardChartEmptyState";
+import { formatDashboardShortDate } from "@/utils/dashboardCharts";
 
 export interface DashboardTimeSeriesPoint {
   date: string;
@@ -18,16 +18,6 @@ interface TimeSeriesLineChartProps {
   emptyMessage: string;
 }
 
-const dateFormatter = new Intl.DateTimeFormat(undefined, {
-  day: "numeric",
-  month: "short",
-  timeZone: "UTC",
-});
-
-function formatDate(value: Date | number): string {
-  return dateFormatter.format(value);
-}
-
 export function TimeSeriesLineChart({
   title,
   description,
@@ -39,29 +29,30 @@ export function TimeSeriesLineChart({
   const hasData = data.some((item) => item.value > 0);
 
   return (
-    <DashboardChartCard title={title} description={description}>
-      {hasData ? (
-        <LineChart
-          height={300}
-          colors={[theme.palette.primary.main]}
-          grid={{ horizontal: true }}
-          xAxis={[
-            {
-              data: data.map((item) => new Date(item.date)),
-              scaleType: "utc",
-              valueFormatter: formatDate,
-            },
-          ]}
-          series={[
-            {
-              data: data.map((item) => item.value),
-              label: seriesLabel,
-            },
-          ]}
-        />
-      ) : (
-        <DashboardChartEmptyState message={emptyMessage} />
-      )}
+    <DashboardChartCard
+      title={title}
+      description={description}
+      hasData={hasData}
+      emptyMessage={emptyMessage}
+    >
+      <LineChart
+        height={300}
+        colors={[theme.palette.primary.main]}
+        grid={{ horizontal: true }}
+        xAxis={[
+          {
+            data: data.map((item) => new Date(item.date)),
+            scaleType: "utc",
+            valueFormatter: formatDashboardShortDate,
+          },
+        ]}
+        series={[
+          {
+            data: data.map((item) => item.value),
+            label: seriesLabel,
+          },
+        ]}
+      />
     </DashboardChartCard>
   );
 }

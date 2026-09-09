@@ -28,6 +28,104 @@ export function PatientHome() {
   const { upcomingAppointment, isLoading, loadError, refreshAppointments } = usePatientHome();
   const fullName = user?.fullName ?? "there";
 
+  function renderAppointmentContent() {
+    if (isLoading) {
+      return <PatientHomeSkeleton />;
+    }
+
+    if (loadError) {
+      return (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" size="small" onClick={() => void refreshAppointments()}>
+              {PATIENT_HOME_TEXT.retry}
+            </Button>
+          }
+        >
+          {loadError}
+        </Alert>
+      );
+    }
+
+    if (!upcomingAppointment) {
+      return (
+        <Paper variant="outlined">
+          <Stack
+            spacing={2}
+            sx={{
+              p: { xs: 3, sm: 5 },
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <Typography component="h2" variant="h4">
+              {PATIENT_HOME_TEXT.empty.title}
+            </Typography>
+            <Typography color="text.secondary">{PATIENT_HOME_TEXT.empty.description}</Typography>
+            <Button component={NextLink} href={APP_ROUTES.patientDoctors}>
+              {PATIENT_HOME_TEXT.actions.findDoctor}
+            </Button>
+          </Stack>
+        </Paper>
+      );
+    }
+
+    return (
+      <Card component="section" aria-labelledby="upcoming-appointment-title">
+        <CardContent>
+          <Stack spacing={3}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              sx={{
+                alignItems: { xs: "flex-start", sm: "center" },
+                justifyContent: "space-between",
+              }}
+            >
+              <Stack spacing={0.5}>
+                <Typography id="upcoming-appointment-title" component="h2" variant="h4">
+                  {PATIENT_HOME_TEXT.upcoming.title}
+                </Typography>
+                <Typography variant="h5">{upcomingAppointment.doctorName}</Typography>
+              </Stack>
+              <AppointmentStatusChip status={upcomingAppointment.status} />
+            </Stack>
+
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Stack spacing={0.5}>
+                  <Typography color="text.secondary" variant="body2">
+                    {PATIENT_HOME_TEXT.upcoming.department}
+                  </Typography>
+                  <Typography>{upcomingAppointment.departmentName}</Typography>
+                </Stack>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Stack spacing={0.5}>
+                  <Typography color="text.secondary" variant="body2">
+                    {PATIENT_HOME_TEXT.upcoming.appointmentTime}
+                  </Typography>
+                  <Typography>
+                    {formatDateTimeRange(
+                      upcomingAppointment.startTime,
+                      upcomingAppointment.endTime,
+                    )}
+                  </Typography>
+                </Stack>
+              </Grid>
+            </Grid>
+          </Stack>
+        </CardContent>
+        <CardActions>
+          <Button component={NextLink} href={APP_ROUTES.patientAppointments} variant="outlined">
+            {PATIENT_HOME_TEXT.actions.viewAppointment}
+          </Button>
+        </CardActions>
+      </Card>
+    );
+  }
+
   return (
     <Container component="main" maxWidth="lg">
       <Stack spacing={4} sx={{ py: { xs: 4, md: 6 } }}>
@@ -61,91 +159,7 @@ export function PatientHome() {
           </Stack>
         </Stack>
 
-        {isLoading ? (
-          <PatientHomeSkeleton />
-        ) : loadError ? (
-          <Alert
-            severity="error"
-            action={
-              <Button color="inherit" size="small" onClick={() => void refreshAppointments()}>
-                {PATIENT_HOME_TEXT.retry}
-              </Button>
-            }
-          >
-            {loadError}
-          </Alert>
-        ) : upcomingAppointment ? (
-          <Card component="section" aria-labelledby="upcoming-appointment-title">
-            <CardContent>
-              <Stack spacing={3}>
-                <Stack
-                  direction={{ xs: "column", sm: "row" }}
-                  spacing={2}
-                  sx={{
-                    alignItems: { xs: "flex-start", sm: "center" },
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Stack spacing={0.5}>
-                    <Typography id="upcoming-appointment-title" component="h2" variant="h4">
-                      {PATIENT_HOME_TEXT.upcoming.title}
-                    </Typography>
-                    <Typography variant="h5">{upcomingAppointment.doctorName}</Typography>
-                  </Stack>
-                  <AppointmentStatusChip status={upcomingAppointment.status} />
-                </Stack>
-
-                <Grid container spacing={3}>
-                  <Grid size={{ xs: 12, sm: 6 }}>
-                    <Stack spacing={0.5}>
-                      <Typography color="text.secondary" variant="body2">
-                        {PATIENT_HOME_TEXT.upcoming.department}
-                      </Typography>
-                      <Typography>{upcomingAppointment.departmentName}</Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid size={{ xs: 12, sm: 6 }}>
-                    <Stack spacing={0.5}>
-                      <Typography color="text.secondary" variant="body2">
-                        {PATIENT_HOME_TEXT.upcoming.appointmentTime}
-                      </Typography>
-                      <Typography>
-                        {formatDateTimeRange(
-                          upcomingAppointment.startTime,
-                          upcomingAppointment.endTime,
-                        )}
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                </Grid>
-              </Stack>
-            </CardContent>
-            <CardActions>
-              <Button component={NextLink} href={APP_ROUTES.patientAppointments} variant="outlined">
-                {PATIENT_HOME_TEXT.actions.viewAppointment}
-              </Button>
-            </CardActions>
-          </Card>
-        ) : (
-          <Paper variant="outlined">
-            <Stack
-              spacing={2}
-              sx={{
-                p: { xs: 3, sm: 5 },
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
-              <Typography component="h2" variant="h4">
-                {PATIENT_HOME_TEXT.empty.title}
-              </Typography>
-              <Typography color="text.secondary">{PATIENT_HOME_TEXT.empty.description}</Typography>
-              <Button component={NextLink} href={APP_ROUTES.patientDoctors}>
-                {PATIENT_HOME_TEXT.actions.findDoctor}
-              </Button>
-            </Stack>
-          </Paper>
-        )}
+        {renderAppointmentContent()}
       </Stack>
     </Container>
   );

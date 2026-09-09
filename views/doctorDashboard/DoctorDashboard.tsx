@@ -11,10 +11,107 @@ import { StatusDistributionChart } from "@/components/dashboard/StatusDistributi
 import { TimeSeriesLineChart } from "@/components/dashboard/TimeSeriesLineChart";
 import { DashboardSkeleton } from "@/components/skeletons/DashboardSkeleton";
 import { useDoctorDashboard } from "@/hooks/useDoctorDashboard";
+import { formatDashboardShortDate } from "@/utils/dashboardCharts";
 import { DOCTOR_DASHBOARD_TEXT } from "@/views/doctorDashboard/DoctorDashboardText";
 
 export function DoctorDashboard() {
   const { dashboard, isLoading, loadError, refreshDashboard } = useDoctorDashboard();
+
+  function renderDashboardContent() {
+    if (isLoading) {
+      return <DashboardSkeleton label={DOCTOR_DASHBOARD_TEXT.loading} />;
+    }
+
+    if (loadError) {
+      return (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" size="small" onClick={() => void refreshDashboard()}>
+              {DOCTOR_DASHBOARD_TEXT.retry}
+            </Button>
+          }
+        >
+          {loadError}
+        </Alert>
+      );
+    }
+
+    if (!dashboard) {
+      return <Alert severity="error">{DOCTOR_DASHBOARD_TEXT.errors.load}</Alert>;
+    }
+
+    return (
+      <Stack spacing={3}>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <DashboardStatisticCard
+              label={DOCTOR_DASHBOARD_TEXT.summary.todayAppointments}
+              value={dashboard.summary.todayAppointments}
+              icon={TodayOutlinedIcon}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <DashboardStatisticCard
+              label={DOCTOR_DASHBOARD_TEXT.summary.upcomingAppointments}
+              value={dashboard.summary.upcomingAppointments}
+              icon={EventAvailableOutlinedIcon}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <DashboardStatisticCard
+              label={DOCTOR_DASHBOARD_TEXT.summary.completedAppointments}
+              value={dashboard.summary.completedAppointments}
+              icon={CheckCircleOutlineOutlinedIcon}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <DashboardStatisticCard
+              label={DOCTOR_DASHBOARD_TEXT.summary.cancelledAppointments}
+              value={dashboard.summary.cancelledAppointments}
+              icon={CancelOutlinedIcon}
+            />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, lg: 5 }}>
+            <StatusDistributionChart
+              title={DOCTOR_DASHBOARD_TEXT.charts.status.title}
+              description={DOCTOR_DASHBOARD_TEXT.charts.status.description}
+              data={dashboard.appointmentsByStatus}
+              emptyMessage={DOCTOR_DASHBOARD_TEXT.charts.empty}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 7 }}>
+            <CountBarChart
+              title={DOCTOR_DASHBOARD_TEXT.charts.byDay.title}
+              description={DOCTOR_DASHBOARD_TEXT.charts.byDay.description}
+              seriesLabel={DOCTOR_DASHBOARD_TEXT.charts.byDay.seriesLabel}
+              data={dashboard.appointmentsByDay.map((item) => ({
+                label: formatDashboardShortDate(new Date(item.date)),
+                value: item.appointmentCount,
+              }))}
+              emptyMessage={DOCTOR_DASHBOARD_TEXT.charts.empty}
+              colorByCategory
+            />
+          </Grid>
+          <Grid size={12}>
+            <TimeSeriesLineChart
+              title={DOCTOR_DASHBOARD_TEXT.charts.overTime.title}
+              description={DOCTOR_DASHBOARD_TEXT.charts.overTime.description}
+              seriesLabel={DOCTOR_DASHBOARD_TEXT.charts.overTime.seriesLabel}
+              data={dashboard.appointmentsOverTime.map((item) => ({
+                date: item.date,
+                value: item.appointmentCount,
+              }))}
+              emptyMessage={DOCTOR_DASHBOARD_TEXT.charts.empty}
+            />
+          </Grid>
+        </Grid>
+      </Stack>
+    );
+  }
 
   return (
     <Container component="main" maxWidth="xl">
@@ -31,95 +128,7 @@ export function DoctorDashboard() {
           </Typography>
         </Stack>
 
-        {isLoading ? (
-          <DashboardSkeleton label={DOCTOR_DASHBOARD_TEXT.loading} />
-        ) : loadError ? (
-          <Alert
-            severity="error"
-            action={
-              <Button color="inherit" size="small" onClick={() => void refreshDashboard()}>
-                {DOCTOR_DASHBOARD_TEXT.retry}
-              </Button>
-            }
-          >
-            {loadError}
-          </Alert>
-        ) : dashboard ? (
-          <Stack spacing={3}>
-            <Grid container spacing={3}>
-              <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-                <DashboardStatisticCard
-                  label={DOCTOR_DASHBOARD_TEXT.summary.todayAppointments}
-                  value={dashboard.summary.todayAppointments}
-                  icon={TodayOutlinedIcon}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-                <DashboardStatisticCard
-                  label={DOCTOR_DASHBOARD_TEXT.summary.upcomingAppointments}
-                  value={dashboard.summary.upcomingAppointments}
-                  icon={EventAvailableOutlinedIcon}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-                <DashboardStatisticCard
-                  label={DOCTOR_DASHBOARD_TEXT.summary.completedAppointments}
-                  value={dashboard.summary.completedAppointments}
-                  icon={CheckCircleOutlineOutlinedIcon}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-                <DashboardStatisticCard
-                  label={DOCTOR_DASHBOARD_TEXT.summary.cancelledAppointments}
-                  value={dashboard.summary.cancelledAppointments}
-                  icon={CancelOutlinedIcon}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={3}>
-              <Grid size={{ xs: 12, lg: 5 }}>
-                <StatusDistributionChart
-                  title={DOCTOR_DASHBOARD_TEXT.charts.status.title}
-                  description={DOCTOR_DASHBOARD_TEXT.charts.status.description}
-                  data={dashboard.appointmentsByStatus}
-                  emptyMessage={DOCTOR_DASHBOARD_TEXT.charts.empty}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, lg: 7 }}>
-                <CountBarChart
-                  title={DOCTOR_DASHBOARD_TEXT.charts.byDay.title}
-                  description={DOCTOR_DASHBOARD_TEXT.charts.byDay.description}
-                  seriesLabel={DOCTOR_DASHBOARD_TEXT.charts.byDay.seriesLabel}
-                  data={dashboard.appointmentsByDay.map((item) => ({
-                    label: new Intl.DateTimeFormat(undefined, {
-                      day: "numeric",
-                      month: "short",
-                      timeZone: "UTC",
-                    }).format(new Date(item.date)),
-                    value: item.appointmentCount,
-                  }))}
-                  emptyMessage={DOCTOR_DASHBOARD_TEXT.charts.empty}
-                  colorByCategory
-                />
-              </Grid>
-              <Grid size={12}>
-                <TimeSeriesLineChart
-                  title={DOCTOR_DASHBOARD_TEXT.charts.overTime.title}
-                  description={DOCTOR_DASHBOARD_TEXT.charts.overTime.description}
-                  seriesLabel={DOCTOR_DASHBOARD_TEXT.charts.overTime.seriesLabel}
-                  data={dashboard.appointmentsOverTime.map((item) => ({
-                    date: item.date,
-                    value: item.appointmentCount,
-                  }))}
-                  emptyMessage={DOCTOR_DASHBOARD_TEXT.charts.empty}
-                />
-              </Grid>
-            </Grid>
-          </Stack>
-        ) : (
-          <Alert severity="error">{DOCTOR_DASHBOARD_TEXT.errors.load}</Alert>
-        )}
+        {renderDashboardContent()}
       </Stack>
     </Container>
   );
