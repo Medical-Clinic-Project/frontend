@@ -28,6 +28,16 @@ export type AppointmentStatus =
   (typeof APPOINTMENT_STATUSES)[keyof typeof APPOINTMENT_STATUSES];
 export type Appointment = z.infer<typeof appointmentSchema>;
 
+export interface AppointmentQuery {
+  search?: string;
+  status?: AppointmentStatus;
+  doctorId?: number;
+  patientId?: number;
+  departmentId?: number;
+  from?: string;
+  to?: string;
+}
+
 export interface CreateAppointmentRequest {
   doctorId: number;
   startTime: string;

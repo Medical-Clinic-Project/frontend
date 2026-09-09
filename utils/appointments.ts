@@ -3,7 +3,11 @@ import {
   DOCTOR_APPOINTMENT_TAB_VALUES,
   PATIENT_APPOINTMENT_TABS,
 } from "@/constants/appointments";
-import type { Appointment, AppointmentStatus } from "@/types/appointment";
+import type {
+  Appointment,
+  AppointmentQuery,
+  AppointmentStatus,
+} from "@/types/appointment";
 import { DOCTOR_APPOINTMENTS_TEXT } from "@/views/doctorAppointments/DoctorAppointmentsText";
 
 export type PatientAppointmentTab =
@@ -61,6 +65,25 @@ export function canUpdateDoctorAppointmentStatus(
   return false;
 }
 
+export function canUpdateAdminAppointmentStatus(
+  appointment: Appointment,
+  nextStatus: Exclude<AppointmentStatus, "Pending">,
+): boolean {
+  if (nextStatus === APPOINTMENT_STATUSES.CONFIRMED) {
+    return canConfirmDoctorAppointment(appointment);
+  }
+
+  if (nextStatus === APPOINTMENT_STATUSES.COMPLETED) {
+    return canCompleteDoctorAppointment(appointment);
+  }
+
+  return canManagePatientAppointment(appointment);
+}
+
+export function canRescheduleAdminAppointment(appointment: Appointment): boolean {
+  return canManagePatientAppointment(appointment);
+}
+
 export function getPatientAppointmentTab(
   appointment: Appointment,
 ): PatientAppointmentTab {
@@ -84,6 +107,25 @@ export function sortAppointmentsByStartTime(
 
     return timeDifference || left.id - right.id;
   });
+}
+
+export function getDateRange(
+  appointmentDate: string,
+): Pick<AppointmentQuery, "from" | "to"> {
+  if (!appointmentDate) {
+    return {};
+  }
+
+  const start = new Date(`${appointmentDate}T00:00:00`);
+
+  if (Number.isNaN(start.getTime())) {
+    return {};
+  }
+
+  const end = new Date(start);
+  end.setDate(end.getDate() + 1);
+
+  return { from: start.toISOString(), to: end.toISOString() };
 }
 
 export function getStatusUpdatingLabel(status: AppointmentStatus): string {

@@ -47,6 +47,12 @@ export const ADMIN_NAVIGATION_ITEMS = [
     exact: false,
     icon: PeopleOutlinedIcon,
   },
+  {
+    label: "Appointments",
+    href: APP_ROUTES.adminAppointments,
+    exact: false,
+    icon: EventAvailableOutlinedIcon,
+  },
 ] as const;
 
 export const PATIENT_NAVIGATION_TEXT = {

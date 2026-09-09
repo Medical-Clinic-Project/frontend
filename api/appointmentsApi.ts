@@ -6,6 +6,7 @@ import {
   appointmentSchema,
   appointmentsSchema,
   type Appointment,
+  type AppointmentQuery,
   type CreateAppointmentRequest,
   type RescheduleAppointmentRequest,
   type UpdateAppointmentStatusRequest,
@@ -29,6 +30,67 @@ function validateAppointments(value: unknown): Appointment[] {
   }
 
   return result.data;
+}
+
+function getAppointmentsPath(query?: AppointmentQuery): string {
+  const searchParams = new URLSearchParams();
+  const normalizedSearch = query?.search?.trim();
+
+  if (normalizedSearch) {
+    searchParams.set("search", normalizedSearch);
+  }
+
+  if (query?.status) {
+    searchParams.set("status", query.status);
+  }
+
+  if (
+    query?.doctorId !== undefined &&
+    Number.isInteger(query.doctorId) &&
+    query.doctorId > 0
+  ) {
+    searchParams.set("doctorId", query.doctorId.toString());
+  }
+
+  if (
+    query?.patientId !== undefined &&
+    Number.isInteger(query.patientId) &&
+    query.patientId > 0
+  ) {
+    searchParams.set("patientId", query.patientId.toString());
+  }
+
+  if (
+    query?.departmentId !== undefined &&
+    Number.isInteger(query.departmentId) &&
+    query.departmentId > 0
+  ) {
+    searchParams.set("departmentId", query.departmentId.toString());
+  }
+
+  if (query?.from) {
+    searchParams.set("from", query.from);
+  }
+
+  if (query?.to) {
+    searchParams.set("to", query.to);
+  }
+
+  const queryString = searchParams.toString();
+  return queryString
+    ? `${APPOINTMENT_ENDPOINTS.root}?${queryString}`
+    : APPOINTMENT_ENDPOINTS.root;
+}
+
+export async function getAllAppointments(
+  query?: AppointmentQuery,
+  signal?: AbortSignal,
+): Promise<Appointment[]> {
+  const response = await apiClient.get<unknown>(getAppointmentsPath(query), {
+    signal,
+  });
+
+  return validateAppointments(response);
 }
 
 export async function getMyAppointments(

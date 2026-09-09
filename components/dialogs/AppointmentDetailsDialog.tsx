@@ -17,7 +17,7 @@ import { formatDateTimeRange } from "@/utils/doctorAvailability/dateTime";
 interface AppointmentDetailsDialogProps {
   open: boolean;
   appointment: Appointment | null;
-  viewer?: "patient" | "doctor";
+  viewer?: "patient" | "doctor" | "admin";
   isLoading: boolean;
   error: string | null;
   onClose: () => void;
@@ -62,7 +62,7 @@ export function AppointmentDetailsDialog({
           </Alert>
         ) : appointment ? (
           <Stack spacing={2.5}>
-            {viewer === "doctor" ? (
+            {(viewer === "doctor" || viewer === "admin") && (
               <>
                 <AppointmentDetailField
                   label={APPOINTMENT_DETAILS_DIALOG_TEXT.patientLabel}
@@ -73,7 +73,8 @@ export function AppointmentDetailsDialog({
                   value={appointment.patientEmail}
                 />
               </>
-            ) : (
+            )}
+            {(viewer === "patient" || viewer === "admin") && (
               <AppointmentDetailField
                 label={APPOINTMENT_DETAILS_DIALOG_TEXT.doctorLabel}
                 value={appointment.doctorName}
