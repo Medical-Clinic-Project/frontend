@@ -12,6 +12,9 @@ export const APP_ROUTES = {
   doctorAvailability: "/doctor/availability",
   patient: "/patient",
   patientProfile: "/patient/profile",
+  patientDoctors: "/patient/doctors",
+  patientDoctorDetails: (id: number) => `/patient/doctors/${id}`,
+  patientAppointments: "/patient/appointments",
 } as const;
 
 export const ROLE_HOME: Record<UserRole, string> = {

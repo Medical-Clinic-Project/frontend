@@ -3,7 +3,7 @@ import DomainOutlinedIcon from "@mui/icons-material/DomainOutlined";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import MedicalServicesOutlinedIcon from "@mui/icons-material/MedicalServicesOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { APP_ROUTES } from "@/constants/routes";
 
 export const ADMIN_NAVIGATION_TEXT = {
@@ -53,6 +53,8 @@ export const PATIENT_NAVIGATION_TEXT = {
   brand: "Clinic Portal",
   section: "Patient",
   ariaLabel: "Patient navigation",
+  menuLabel: "Open patient navigation",
+  closeMenuLabel: "Close patient navigation",
 } as const;
 
 export const DOCTOR_NAVIGATION_TEXT = {
@@ -84,10 +86,24 @@ export const PATIENT_NAVIGATION_ITEMS = [
     label: "Dashboard",
     href: APP_ROUTES.patient,
     exact: true,
+    icon: DashboardOutlinedIcon,
+  },
+  {
+    label: "Find a doctor",
+    href: APP_ROUTES.patientDoctors,
+    exact: false,
+    icon: MedicalServicesOutlinedIcon,
+  },
+  {
+    label: "Appointments",
+    href: APP_ROUTES.patientAppointments,
+    exact: false,
+    icon: EventAvailableOutlinedIcon,
   },
   {
     label: "Profile",
     href: APP_ROUTES.patientProfile,
     exact: false,
+    icon: PersonOutlineOutlinedIcon,
   },
 ] as const;

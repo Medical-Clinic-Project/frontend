@@ -29,6 +29,19 @@ export const DOCTOR_AVAILABILITY_ENDPOINTS = {
   byId: (id: number) => `/api/doctor-availability/${id}`,
 } as const;
 
+export const PATIENT_DOCTOR_ENDPOINTS = {
+  root: "/api/patient/doctors",
+  byId: (id: number) => `/api/patient/doctors/${id}`,
+} as const;
+
+export const APPOINTMENT_ENDPOINTS = {
+  root: "/api/appointments",
+  mine: "/api/appointments/mine",
+  byId: (id: number) => `/api/appointments/${id}`,
+  cancel: (id: number) => `/api/appointments/${id}/cancel`,
+  reschedule: (id: number) => `/api/appointments/${id}/reschedule`,
+} as const;
+
 export const PATIENT_ENDPOINTS = {
   root: "/api/patients",
   byId: (id: number) => `/api/patients/${id}`,

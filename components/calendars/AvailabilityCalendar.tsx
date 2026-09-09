@@ -6,7 +6,10 @@ import {
   DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH,
   DOCTOR_AVAILABILITY_DRAG_DATA_TYPE,
 } from "@/constants/doctorAvailability";
-import type { DoctorAvailability } from "@/types/doctorAvailability";
+import type {
+  AvailabilityCalendarInteraction,
+  DoctorAvailability,
+} from "@/types/doctorAvailability";
 import {
   getAvailabilityCalendarHourMarkers,
   getAvailabilityCalendarLayout,
@@ -35,26 +38,48 @@ import {
   CalendarViewport,
 } from "./AvailabilityCalendarStyled";
 
+export interface AvailabilityCalendarCopy {
+  hint: string;
+  time: string;
+  slotLabel: (start: string, end: string) => string;
+  slotTooltip: (start: string, end: string) => string;
+}
+
 interface AvailabilityCalendarProps {
   availability: readonly DoctorAvailability[];
   days: readonly Date[];
   viewMode: AvailabilityViewMode;
-  movingAvailabilityId: number | null;
+  interaction?: AvailabilityCalendarInteraction;
+  copy?: AvailabilityCalendarCopy;
+  movingAvailabilityId?: number | null;
   onSelect: (availability: DoctorAvailability) => void;
-  onMove: (
+  onMove?: (
     availability: DoctorAvailability,
     newStart: Date,
   ) => void | Promise<void>;
+  isSlotSelectable?: (availability: DoctorAvailability) => boolean;
 }
 
 export function AvailabilityCalendar({
   availability,
   days,
   viewMode,
-  movingAvailabilityId,
+  interaction = "manage",
+  copy,
+  movingAvailabilityId = null,
   onSelect,
   onMove,
+  isSlotSelectable = () => true,
 }: AvailabilityCalendarProps) {
+  const calendarCopy =
+    copy ??
+    {
+      hint: DOCTOR_AVAILABILITY_TEXT.calendar.dragHint,
+      time: DOCTOR_AVAILABILITY_TEXT.calendar.time,
+      slotLabel: DOCTOR_AVAILABILITY_TEXT.calendar.slotLabel,
+      slotTooltip: DOCTOR_AVAILABILITY_TEXT.calendar.slotTooltip,
+    };
+  const canManageSlots = interaction === "manage";
   const segments = useMemo(
     () => getAvailabilityCalendarSegments(availability, days),
     [availability, days],
@@ -83,7 +108,7 @@ export function AvailabilityCalendar({
     );
     const slot = availability.find((item) => item.id === availabilityId);
 
-    if (!slot || movingAvailabilityId !== null) {
+    if (!slot || movingAvailabilityId !== null || !onMove) {
       return;
     }
 
@@ -103,7 +128,7 @@ export function AvailabilityCalendar({
     <Paper variant="outlined">
       <Stack spacing={1.5} sx={{ p: { xs: 1.5, sm: 2 } }}>
         <Typography variant="body2" color="text.secondary">
-          {DOCTOR_AVAILABILITY_TEXT.calendar.dragHint}
+          {calendarCopy.hint}
         </Typography>
 
         <CalendarScrollArea>
@@ -115,7 +140,7 @@ export function AvailabilityCalendar({
               >
                 <CalendarHeaderCell>
                   <Typography variant="caption" color="text.secondary">
-                    {DOCTOR_AVAILABILITY_TEXT.calendar.time}
+                    {calendarCopy.time}
                   </Typography>
                 </CalendarHeaderCell>
               </Grid>
@@ -158,12 +183,16 @@ export function AvailabilityCalendar({
                     key={day.toISOString()}
                     size={1}
                     onDragOver={(event) => {
-                      if (movingAvailabilityId === null) {
+                      if (canManageSlots && movingAvailabilityId === null) {
                         event.preventDefault();
                         event.dataTransfer.dropEffect = "move";
                       }
                     }}
-                    onDrop={(event) => handleDrop(event, day)}
+                    onDrop={
+                      canManageSlots
+                        ? (event) => handleDrop(event, day)
+                        : undefined
+                    }
                   >
                     {segmentsByDay[dayIndex].map((segment) => {
                       const { height, top } = getAvailabilitySegmentLayout(
@@ -174,28 +203,38 @@ export function AvailabilityCalendar({
                         getAvailabilitySegmentTimeLabels(segment);
                       const isMoving =
                         movingAvailabilityId === segment.availability.id;
+                      const isSelectable = isSlotSelectable(segment.availability);
+                      const isDisabled = isMoving || !isSelectable;
 
                       return (
                         <Tooltip
                           key={`${segment.availability.id}-${dayIndex}`}
-                          title={DOCTOR_AVAILABILITY_TEXT.calendar.slotTooltip(
+                          title={calendarCopy.slotTooltip(
                             startLabel,
                             endLabel,
                           )}
                           arrow
                         >
                           <AvailabilitySegmentButton
-                            draggable={!isMoving}
-                            disabled={isMoving}
-                            aria-label={DOCTOR_AVAILABILITY_TEXT.calendar.slotLabel(
+                            draggable={canManageSlots && !isMoving}
+                            disabled={isDisabled}
+                            aria-label={calendarCopy.slotLabel(
                               startLabel,
                               endLabel,
                             )}
                             isMoving={isMoving}
                             segmentHeight={height}
                             segmentTop={top}
-                            onClick={() => onSelect(segment.availability)}
+                            onClick={() => {
+                              if (!isDisabled) {
+                                onSelect(segment.availability);
+                              }
+                            }}
                             onDragStart={(event) => {
+                              if (!canManageSlots) {
+                                return;
+                              }
+
                               event.dataTransfer.effectAllowed = "move";
                               event.dataTransfer.setData(
                                 DOCTOR_AVAILABILITY_DRAG_DATA_TYPE,
@@ -204,7 +243,7 @@ export function AvailabilityCalendar({
                             }}
                           >
                             <Typography variant="caption" color="inherit">
-                              {DOCTOR_AVAILABILITY_TEXT.calendar.slotTooltip(
+                              {calendarCopy.slotTooltip(
                                 startLabel,
                                 endLabel,
                               )}
