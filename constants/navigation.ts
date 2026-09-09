@@ -1,5 +1,6 @@
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import DomainOutlinedIcon from "@mui/icons-material/DomainOutlined";
+import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import MedicalServicesOutlinedIcon from "@mui/icons-material/MedicalServicesOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 
@@ -53,6 +54,30 @@ export const PATIENT_NAVIGATION_TEXT = {
   section: "Patient",
   ariaLabel: "Patient navigation",
 } as const;
+
+export const DOCTOR_NAVIGATION_TEXT = {
+  brand: "Clinic Portal",
+  section: "Doctor",
+  ariaLabel: "Doctor navigation",
+
+  menuLabel: "Open doctor navigation",
+  closeMenuLabel: "Close doctor navigation",
+} as const;
+
+export const DOCTOR_NAVIGATION_ITEMS = [
+  {
+    label: "Dashboard",
+    href: APP_ROUTES.doctor,
+    exact: true,
+    icon: DashboardOutlinedIcon,
+  },
+  {
+    label: "Availability",
+    href: APP_ROUTES.doctorAvailability,
+    exact: false,
+    icon: EventAvailableOutlinedIcon,
+  },
+] as const;
 
 export const PATIENT_NAVIGATION_ITEMS = [
   {

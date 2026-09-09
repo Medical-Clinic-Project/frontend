@@ -1,0 +1,23 @@
+import type { DoctorAvailabilityFormValues } from "@/utils/validation/doctorAvailabilityValidation";
+
+export const DOCTOR_AVAILABILITY_DRAG_DATA_TYPE =
+  "application/x-doctor-availability-id";
+
+export const DOCTOR_AVAILABILITY_CALENDAR_DEFAULT_START_HOUR = 8;
+export const DOCTOR_AVAILABILITY_CALENDAR_DEFAULT_END_HOUR = 18;
+export const DOCTOR_AVAILABILITY_CALENDAR_HOUR_HEIGHT = 72;
+export const DOCTOR_AVAILABILITY_CALENDAR_DRAG_SNAP_MINUTES = 15;
+export const DOCTOR_AVAILABILITY_CALENDAR_MIN_SLOT_HEIGHT = 24;
+export const DOCTOR_AVAILABILITY_CALENDAR_TIME_GUTTER_WIDTH = 84;
+export const DOCTOR_AVAILABILITY_CALENDAR_DAY_MIN_WIDTH = 132;
+export const DOCTOR_AVAILABILITY_CALENDAR_HEADER_HEIGHT = 56;
+
+export const DOCTOR_AVAILABILITY_DEFAULT_START_HOUR = 9;
+export const DOCTOR_AVAILABILITY_DEFAULT_DURATION_MINUTES = 60;
+export const DOCTOR_AVAILABILITY_DEFAULT_ROUNDING_MINUTES = 30;
+export const DOCTOR_AVAILABILITY_DATE_TIME_INPUT_STEP_SECONDS = 300;
+
+export const DOCTOR_AVAILABILITY_FORM_FIELDS = [
+  "startTime",
+  "endTime",
+] as const satisfies readonly (keyof DoctorAvailabilityFormValues)[];
