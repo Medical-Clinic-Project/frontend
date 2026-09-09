@@ -1,4 +1,6 @@
 import { alpha, type Components, type Theme } from "@mui/material/styles";
+import type {} from "@mui/x-data-grid/themeAugmentation";
+import { ADMIN_NAVIGATION_DRAWER_WIDTH } from "@/constants/navigation";
 
 export const components: Components<Theme> = {
   MuiCssBaseline: {
@@ -22,6 +24,10 @@ export const components: Components<Theme> = {
         minHeight: theme.spacing(6),
         borderRadius: theme.shape.borderRadius,
         paddingInline: theme.spacing(2.5),
+      }),
+      sizeSmall: ({ theme }) => ({
+        minHeight: theme.spacing(5),
+        paddingInline: theme.spacing(2),
       }),
     },
   },
@@ -71,6 +77,14 @@ export const components: Components<Theme> = {
       }),
     },
   },
+  MuiDrawer: {
+    styleOverrides: {
+      paper: {
+        width: ADMIN_NAVIGATION_DRAWER_WIDTH,
+        boxSizing: "border-box",
+      },
+    },
+  },
   MuiAlert: {
     defaultProps: {
       variant: "outlined",
@@ -79,6 +93,17 @@ export const components: Components<Theme> = {
       root: ({ theme }) => ({
         borderRadius: theme.shape.borderRadius,
         alignItems: "center",
+      }),
+    },
+  },
+  MuiDialogActions: {
+    defaultProps: {
+      disableSpacing: true,
+    },
+    styleOverrides: {
+      root: ({ theme }) => ({
+        gap: theme.spacing(1.5),
+        padding: theme.spacing(2, 3, 3),
       }),
     },
   },
@@ -104,6 +129,18 @@ export const components: Components<Theme> = {
       root: {
         fontWeight: 500,
       },
+    },
+  },
+  MuiDataGrid: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        borderColor: theme.palette.divider,
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: theme.palette.background.paper,
+      }),
+      columnHeaders: ({ theme }) => ({
+        backgroundColor: alpha(theme.palette.primary.light, 0.08),
+      }),
     },
   },
 };

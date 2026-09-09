@@ -12,6 +12,12 @@ export const AUTH_ENDPOINTS = {
   logout: "/api/auth/logout",
 } as const;
 
+export const DEPARTMENT_ENDPOINTS = {
+  root: "/api/departments",
+  byId: (id: number) => `/api/departments/${id}`,
+  status: (id: number) => `/api/departments/${id}/status`,
+} as const;
+
 export function getApiUrl(path: string): string {
   if (!API_BASE_URL) {
     throw new ApiError(0, API_MESSAGES.missingConfiguration);

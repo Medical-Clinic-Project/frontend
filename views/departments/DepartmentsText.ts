@@ -1,0 +1,65 @@
+export const DEPARTMENTS_TEXT = {
+  metadataTitle: "Departments",
+  eyebrow: "Admin workspace",
+  title: "Departments",
+  subtitle:
+    "Manage the clinic departments that doctors and appointments will use.",
+  createAction: "Add department",
+  searchLabel: "Search departments",
+  searchPlaceholder: "Search by name or description",
+  loading: "Loading departments…",
+  retry: "Try again",
+  table: {
+    name: "Name",
+    description: "Description",
+    status: "Status",
+    actions: "Actions",
+  },
+  status: {
+    active: "Active",
+    inactive: "Inactive",
+  },
+  actions: {
+    edit: "Edit department",
+    activate: "Activate department",
+    deactivate: "Deactivate department",
+    activating: "Activating department",
+    deactivating: "Deactivating department",
+  },
+  empty: {
+    title: "No departments yet",
+    description: "Add the first department to start organizing clinic services.",
+  },
+  noResults: {
+    title: "No matching departments",
+    description: "Try a different name or description.",
+  },
+  dialog: {
+    createTitle: "Add department",
+    editTitle: "Edit department",
+    nameLabel: "Name",
+    descriptionLabel: "Description",
+    descriptionHelper: "Briefly describe the services provided by this department.",
+    activeLabel: "Department is active",
+    cancel: "Cancel",
+    create: "Add department",
+    save: "Save changes",
+  },
+  validation: {
+    nameRequired: "Department name is required.",
+    nameMinimum: "Department name must be at least 2 characters.",
+    nameMaximum: "Department name must be 100 characters or fewer.",
+    descriptionMaximum: "Description must be 500 characters or fewer.",
+  },
+  errors: {
+    load: "Unable to load departments. Please try again.",
+    save: "Unable to save the department. Please try again.",
+    status: "Unable to update the department status. Please try again.",
+  },
+  feedback: {
+    created: (name: string) => `${name} was added successfully.`,
+    updated: (name: string) => `${name} was updated successfully.`,
+    activated: (name: string) => `${name} is now active.`,
+    deactivated: (name: string) => `${name} is now inactive.`,
+  },
+} as const;
