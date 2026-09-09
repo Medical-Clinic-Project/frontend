@@ -6,6 +6,7 @@ export const APP_ROUTES = {
   register: "/register",
   admin: "/admin",
   adminDepartments: "/admin/departments",
+  adminDoctors: "/admin/doctors",
   doctor: "/doctor",
   patient: "/patient",
 } as const;

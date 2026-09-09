@@ -1,4 +1,6 @@
+
 import { apiClient } from "@/api/apiClient";
+
 import { DEPARTMENT_ENDPOINTS } from "@/constants/api";
 import { API_MESSAGES } from "@/constants/apiMessages";
 import { ApiError } from "@/types/api";
@@ -42,6 +44,7 @@ function getDepartmentsPath(search?: string): string {
   return `${DEPARTMENT_ENDPOINTS.root}?${query.toString()}`;
 }
 
+
 export async function getDepartments(
   search?: string,
   signal?: AbortSignal,
@@ -77,3 +80,4 @@ export async function updateDepartmentStatus(
   const response = await apiClient.patch<unknown>(DEPARTMENT_ENDPOINTS.status(id), request);
   return validateDepartment(response);
 }
+

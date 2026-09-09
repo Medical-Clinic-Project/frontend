@@ -18,6 +18,11 @@ export const DEPARTMENT_ENDPOINTS = {
   status: (id: number) => `/api/departments/${id}/status`,
 } as const;
 
+export const DOCTOR_ENDPOINTS = {
+  root: "/api/doctors",
+  byId: (id: number) => `/api/doctors/${id}`,
+} as const;
+
 export function getApiUrl(path: string): string {
   if (!API_BASE_URL) {
     throw new ApiError(0, API_MESSAGES.missingConfiguration);

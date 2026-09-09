@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+
 import {
   createDepartment,
   getDepartments,
@@ -15,13 +16,16 @@ import { getUserFacingError } from "@/utils/apiErrors";
 import type { DepartmentFormValues } from "@/utils/validation/departmentValidation";
 import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
 
+
 const SEARCH_DEBOUNCE_MS = 300;
 
 export function useDepartments() {
+
   const { showToast } = useToast();
   const [departments, setDepartments] = useState<Department[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
@@ -40,7 +44,9 @@ export function useDepartments() {
       setLoadError(null);
 
       try {
+
         const loadedDepartments = await getDepartments(searchTerm, signal);
+
 
         if (signal?.aborted) {
           return false;
@@ -88,13 +94,16 @@ export function useDepartments() {
     setLoadError(null);
   };
 
+
   const openCreateDialog = () => {
+
     setFormFieldErrors({});
     setSelectedDepartment(null);
     setIsDialogOpen(true);
   };
 
   const openEditDialog = (department: Department) => {
+
     setFormFieldErrors({});
     setSelectedDepartment(department);
     setIsDialogOpen(true);
@@ -118,17 +127,20 @@ export function useDepartments() {
     try {
       if (selectedDepartment) {
         const updatedDepartment = await updateDepartment(
+
           selectedDepartment.id,
           request,
         );
 
         await loadDepartments(search, false);
+
         showToast(DEPARTMENTS_TEXT.feedback.updated(updatedDepartment.name));
       } else {
         const createdDepartment = await createDepartment(request);
 
         await loadDepartments(search, false);
         showToast(DEPARTMENTS_TEXT.feedback.created(createdDepartment.name));
+
       }
 
       closeDialog();
@@ -137,39 +149,52 @@ export function useDepartments() {
       if (error instanceof ApiError) {
         if (error.status === 400 && Object.keys(error.fieldErrors).length) {
           setFormFieldErrors(error.fieldErrors);
+
           showToast(error.message, "error");
+
           return false;
         }
 
         if (error.status === 409) {
           setFormFieldErrors({ name: [error.message] });
+
           showToast(error.message, "error");
+
           return false;
         }
       }
 
+
       showToast(getUserFacingError(error, DEPARTMENTS_TEXT.errors.save), "error");
+
       return false;
     }
   };
 
   const toggleDepartmentStatus = async (department: Department): Promise<void> => {
+
     setStatusUpdatingId(department.id);
     const nextIsActive = !department.isActive;
 
     try {
+
       const updatedDepartment = await updateDepartmentStatus(department.id, {
+
         isActive: nextIsActive,
       });
 
       await loadDepartments(search, false);
+
       showToast(
+
         updatedDepartment.isActive
           ? DEPARTMENTS_TEXT.feedback.activated(updatedDepartment.name)
           : DEPARTMENTS_TEXT.feedback.deactivated(updatedDepartment.name),
       );
     } catch (error) {
+
       showToast(getUserFacingError(error, DEPARTMENTS_TEXT.errors.status), "error");
+
     } finally {
       setStatusUpdatingId(null);
     }
@@ -182,6 +207,7 @@ export function useDepartments() {
     isLoading,
     retryLoadDepartments,
     loadError,
+
     openCreateDialog,
     openEditDialog,
     closeDialog,
@@ -190,6 +216,7 @@ export function useDepartments() {
     selectedDepartment,
     setSearch: updateSearch,
     statusUpdatingId,
+
     toggleDepartmentStatus,
   };
 }

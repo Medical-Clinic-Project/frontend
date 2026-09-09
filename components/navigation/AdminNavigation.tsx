@@ -18,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { usePathname } from "next/navigation";
+
 import NextLink from "@/components/navigation/NextLink";
 import {
   ADMIN_NAVIGATION_DRAWER_WIDTH,
@@ -30,13 +31,22 @@ interface AdminNavigationLinksProps {
   pathname: string;
 }
 
-function AdminNavigationLinks({ onNavigate, pathname }: AdminNavigationLinksProps) {
+function AdminNavigationLinks({
+  onNavigate,
+  pathname,
+}: AdminNavigationLinksProps) {
   return (
-    <List component="nav" aria-label={ADMIN_NAVIGATION_TEXT.ariaLabel} disablePadding>
+    <List
+      component="nav"
+      aria-label={ADMIN_NAVIGATION_TEXT.ariaLabel}
+      disablePadding
+    >
       {ADMIN_NAVIGATION_ITEMS.map((item) => {
         const isActive = item.exact
           ? pathname === item.href
-          : pathname === item.href || pathname.startsWith(`${item.href}/`);
+          : pathname === item.href ||
+            pathname.startsWith(`${item.href}/`);
+
         const Icon = item.icon;
 
         return (
@@ -51,6 +61,7 @@ function AdminNavigationLinks({ onNavigate, pathname }: AdminNavigationLinksProp
               <ListItemIcon>
                 <Icon />
               </ListItemIcon>
+
               <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
@@ -68,21 +79,31 @@ function AdminNavigationDrawerContent({
     <Stack sx={{ height: "100%" }}>
       <Toolbar>
         <Stack spacing={0}>
-          <Typography variant="h6">{ADMIN_NAVIGATION_TEXT.brand}</Typography>
+          <Typography variant="h6">
+            {ADMIN_NAVIGATION_TEXT.brand}
+          </Typography>
+
           <Typography variant="caption" color="text.secondary">
             {ADMIN_NAVIGATION_TEXT.section}
           </Typography>
         </Stack>
       </Toolbar>
+
       <Divider />
-      <AdminNavigationLinks pathname={pathname} onNavigate={onNavigate} />
+
+      <AdminNavigationLinks
+        pathname={pathname}
+        onNavigate={onNavigate}
+      />
     </Stack>
   );
 }
 
 export function AdminNavigation() {
   const pathname = usePathname();
-  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] =
+    useState(false);
 
   const closeMobileDrawer = () => {
     setIsMobileDrawerOpen(false);
@@ -109,7 +130,10 @@ export function AdminNavigation() {
           >
             <MenuOutlinedIcon />
           </IconButton>
-          <Typography variant="h6">{ADMIN_NAVIGATION_TEXT.brand}</Typography>
+
+          <Typography variant="h6">
+            {ADMIN_NAVIGATION_TEXT.brand}
+          </Typography>
         </Toolbar>
       </AppBar>
 
@@ -145,7 +169,10 @@ export function AdminNavigation() {
           },
         }}
       >
-        <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
+        <Stack
+          direction="row"
+          sx={{ justifyContent: "flex-end" }}
+        >
           <IconButton
             aria-label={ADMIN_NAVIGATION_TEXT.closeMenuLabel}
             onClick={closeMobileDrawer}
@@ -153,6 +180,7 @@ export function AdminNavigation() {
             <CloseOutlinedIcon />
           </IconButton>
         </Stack>
+
         <AdminNavigationDrawerContent
           pathname={pathname}
           onNavigate={closeMobileDrawer}

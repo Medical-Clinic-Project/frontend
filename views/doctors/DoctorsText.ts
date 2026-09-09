@@ -1,0 +1,93 @@
+export const DOCTORS_TEXT = {
+  metadataTitle: "Doctors",
+  eyebrow: "Admin workspace",
+  title: "Doctors",
+  subtitle:
+    "Manage doctor accounts, department assignments, and access status.",
+  createAction: "Add doctor",
+  searchLabel: "Search doctors",
+  searchPlaceholder: "Search by name, email, or department",
+  departmentFilterLabel: "Filter by department",
+  allDepartments: "All departments",
+  loading: "Loading doctors…",
+  retry: "Try again",
+  table: {
+    doctor: "Doctor",
+    email: "Email",
+    department: "Department",
+    status: "Status",
+    actions: "Actions",
+  },
+  status: {
+    active: "Active",
+    inactive: "Inactive",
+  },
+  actions: {
+    edit: "Edit",
+    activate: "Activate",
+    deactivate: "Deactivate",
+    activating: "Activating doctor",
+    deactivating: "Deactivating doctor",
+  },
+  empty: {
+    title: "No doctors yet",
+    description: "Add the first doctor to begin building the clinic team.",
+  },
+  noResults: {
+    title: "No matching doctors",
+    description: "Try a different search or department filter.",
+  },
+  dialog: {
+    createTitle: "Add doctor",
+    editTitle: "Edit doctor",
+    fullNameLabel: "Full name",
+    emailLabel: "Email address",
+    passwordLabel: "Password",
+    confirmPasswordLabel: "Confirm password",
+    departmentLabel: "Department",
+    departmentPlaceholder: "Select a department",
+    departmentHelper: "Doctors can only be assigned to active departments.",
+    cancel: "Cancel",
+    create: "Add doctor",
+    save: "Save changes",
+  },
+  validation: {
+    fullNameRequired: "Doctor name is required.",
+    fullNameMinimum: "Doctor name must be at least 2 characters.",
+    fullNameMaximum: "Doctor name must be 100 characters or fewer.",
+    emailRequired: "Email address is required.",
+    emailInvalid: "Enter a valid email address.",
+    emailMaximum: "Email address must be 150 characters or fewer.",
+    departmentRequired: "Select an active department.",
+  },
+  departmentStates: {
+    loading: "Loading departments…",
+    loadError: "Unable to load departments. Please try again.",
+    noActive:
+      "No active departments are available. Activate a department before assigning a doctor.",
+    inactiveSuffix: "(inactive)",
+    reassignmentRequired:
+      "The current department is inactive. Select an active department to save changes.",
+  },
+  accessibility: {
+    tableLabel: "Doctors",
+    editDoctor: (name: string) => `Edit ${name}`,
+    activateDoctor: (name: string) => `Activate ${name}`,
+    deactivateDoctor: (name: string) => `Deactivate ${name}`,
+  },
+  errors: {
+    load: "Unable to load doctors. Please try again.",
+    departmentsLoad:
+      "Unable to load departments needed for doctor management. Please try again.",
+    save: "Unable to save the doctor. Please try again.",
+    status: "Unable to update the doctor status. Please try again.",
+    emailInUse: "A doctor with this email already exists.",
+    departmentUnavailable: "Select an active department.",
+  },
+  feedback: {
+    created: (name: string) => `${name} was added successfully.`,
+    updated: (name: string) => `${name} was updated successfully.`,
+    activated: (name: string) => `${name} is now active.`,
+    deactivated: (name: string) => `${name} is now inactive.`,
+  },
+} as const;

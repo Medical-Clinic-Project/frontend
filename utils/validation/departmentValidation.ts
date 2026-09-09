@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { DEPARTMENTS_TEXT } from "@/views/departments/DepartmentsText";
 
 export const departmentFormSchema = z.object({
